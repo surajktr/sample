@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { parseSSCHtml } from '@/lib/parseSSCHtml';
 import type { ScorecardData } from '@/lib/parseSSCHtml';
+import QuestionDetail from '@/components/QuestionDetail';
 import Scorecard from '@/components/Scorecard';
 import { Loader2, FileText, Link } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -109,6 +110,7 @@ const Index = () => {
       {scorecard && (
         <div className="max-w-4xl mx-auto px-4 py-10">
           <Scorecard data={scorecard} />
+          <QuestionDetail data={scorecard} />
         </div>
       )}
     </div>
