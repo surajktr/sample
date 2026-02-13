@@ -51,6 +51,7 @@ function extractQuestions(doc: Document): QuestionResult[] {
 
   // Find all question rows - each <td class="rw"> contains one question
   const questionRows = doc.querySelectorAll('td.rw');
+  let sequentialIndex = 0;
 
   questionRows.forEach((row) => {
     const questionTbl = row.querySelector('table.questionRowTbl');
@@ -58,15 +59,9 @@ function extractQuestions(doc: Document): QuestionResult[] {
 
     if (!questionTbl || !menuTbl) return;
 
-    // Extract question number from the bold td (e.g., "Q.3")
-    const qNumTd = questionTbl.querySelector('td.bold[valign="top"][align="center"]');
-    let questionNumber = 0;
-    if (qNumTd) {
-      const match = qNumTd.textContent?.trim().match(/Q\.(\d+)/);
-      if (match) questionNumber = parseInt(match[1]);
-    }
-
-    if (questionNumber === 0) return;
+    // Use sequential index (1-based) as the question number since
+    // SSC answer keys reset Q.numbers per section (Q.1-Q.30 each)
+    sequentialIndex++;
 
     // Extract metadata from menu table
     const menuRows = menuTbl.querySelectorAll('tr');
@@ -93,7 +88,6 @@ function extractQuestions(doc: Document): QuestionResult[] {
     const answerTds = questionTbl.querySelectorAll('td.rightAns, td.wrngAns');
     answerTds.forEach((td) => {
       if (td.classList.contains('rightAns')) {
-        // Extract option number from text content like "2. "
         const text = td.textContent?.trim() || '';
         const match = text.match(/^(\d+)\./);
         if (match) correctOption = parseInt(match[1]);
@@ -103,16 +97,13 @@ function extractQuestions(doc: Document): QuestionResult[] {
     const isCorrect = chosenOption !== null && chosenOption === correctOption;
 
     questions.push({
-      questionNumber,
+      questionNumber: sequentialIndex,
       status,
       chosenOption,
       isCorrect,
       correctOption,
     });
   });
-
-  // Sort by question number
-  questions.sort((a, b) => a.questionNumber - b.questionNumber);
 
   return questions;
 }
