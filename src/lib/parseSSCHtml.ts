@@ -22,7 +22,17 @@ export interface SectionResult {
   score: number;
 }
 
+export interface CandidateInfo {
+  rollNumber: string;
+  candidateName: string;
+  venueName: string;
+  examDate: string;
+  examTime: string;
+  subject: string;
+}
+
 export interface ScorecardData {
+  candidateInfo: CandidateInfo | null;
   sections: SectionResult[];
   questions: QuestionResult[];
   totalCorrect: number;
@@ -50,8 +60,37 @@ export function parseSSCHtml(html: string): ScorecardData {
   // Try to extract base URL from the HTML for resolving relative image paths
   const baseUrl = extractBaseUrl(html);
 
+  const candidateInfo = extractCandidateInfo(doc);
   const questions = extractQuestions(doc, baseUrl);
-  return calculateScorecard(questions, baseUrl);
+  return calculateScorecard(questions, baseUrl, candidateInfo);
+}
+
+function extractCandidateInfo(doc: Document): CandidateInfo | null {
+  // Find the info table - it has rows with Roll Number, Candidate Name, etc.
+  const tables = doc.querySelectorAll('table');
+  for (const table of tables) {
+    const rows = table.querySelectorAll('tr');
+    const info: Record<string, string> = {};
+    for (const row of rows) {
+      const tds = row.querySelectorAll('td');
+      if (tds.length >= 2) {
+        const key = tds[0].textContent?.trim() || '';
+        const value = tds[1].textContent?.trim() || '';
+        if (key) info[key] = value;
+      }
+    }
+    if (info['Roll Number'] || info['Candidate Name']) {
+      return {
+        rollNumber: info['Roll Number'] || '',
+        candidateName: info['Candidate Name'] || '',
+        venueName: info['Venue Name'] || '',
+        examDate: info['Exam Date'] || '',
+        examTime: info['Exam Time'] || '',
+        subject: info['Subject'] || '',
+      };
+    }
+  }
+  return null;
 }
 
 function extractBaseUrl(html: string): string {
@@ -172,7 +211,7 @@ function extractQuestions(doc: Document, baseUrl: string): QuestionResult[] {
   return questions;
 }
 
-function calculateScorecard(questions: QuestionResult[], baseUrl: string): ScorecardData {
+function calculateScorecard(questions: QuestionResult[], baseUrl: string, candidateInfo: CandidateInfo | null): ScorecardData {
   const sections: SectionResult[] = [];
   let qualifyingSection: SectionResult | null = null;
 
@@ -216,6 +255,7 @@ function calculateScorecard(questions: QuestionResult[], baseUrl: string): Score
   const totalMaxMarks = sections.reduce((s, sec) => s + sec.maxMarks, 0);
 
   return {
+    candidateInfo,
     sections,
     questions,
     totalCorrect,
