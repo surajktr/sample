@@ -333,7 +333,8 @@ function calculateScorecard(
 }
 
 export function getQuestionsForSection(data: ScorecardData, part: string): QuestionResult[] {
-  const section = data.examConfig.sections.find((s) => s.part === part);
+  const sections = data?.examConfig?.sections ?? [];
+  const section = sections.find((s) => s.part === part);
   if (!section) return [];
   return data.questions.filter(
     (q) => q.questionNumber >= section.start && q.questionNumber <= section.end
@@ -341,5 +342,5 @@ export function getQuestionsForSection(data: ScorecardData, part: string): Quest
 }
 
 export function getExamSections(data: ScorecardData) {
-  return data.examConfig.sections;
+  return data?.examConfig?.sections ?? [];
 }
