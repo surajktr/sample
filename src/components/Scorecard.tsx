@@ -1,5 +1,5 @@
 import type { ScorecardData } from '@/lib/parseSSCHtml';
-import { BarChart3 } from 'lucide-react';
+import { BarChart3, User, MapPin, Calendar, Clock, BookOpen } from 'lucide-react';
 
 interface ScorecardProps {
   data: ScorecardData;
@@ -8,6 +8,72 @@ interface ScorecardProps {
 const Scorecard = ({ data }: ScorecardProps) => {
   return (
     <div className="w-full max-w-4xl mx-auto">
+      {/* Candidate Info */}
+      {data.candidateInfo && (
+        <div className="bg-card rounded-xl border border-border shadow-sm p-6 mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <User className="w-5 h-5 text-primary" />
+            <h2 className="text-xl font-bold text-foreground">Candidate Information</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {data.candidateInfo.candidateName && (
+              <div className="flex items-start gap-2">
+                <User className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Name</p>
+                  <p className="font-semibold text-foreground">{data.candidateInfo.candidateName}</p>
+                </div>
+              </div>
+            )}
+            {data.candidateInfo.rollNumber && (
+              <div className="flex items-start gap-2">
+                <BookOpen className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Roll Number</p>
+                  <p className="font-semibold text-foreground">{data.candidateInfo.rollNumber}</p>
+                </div>
+              </div>
+            )}
+            {data.candidateInfo.venueName && (
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Venue</p>
+                  <p className="font-semibold text-foreground">{data.candidateInfo.venueName}</p>
+                </div>
+              </div>
+            )}
+            {data.candidateInfo.examDate && (
+              <div className="flex items-start gap-2">
+                <Calendar className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Exam Date</p>
+                  <p className="font-semibold text-foreground">{data.candidateInfo.examDate}</p>
+                </div>
+              </div>
+            )}
+            {data.candidateInfo.examTime && (
+              <div className="flex items-start gap-2">
+                <Clock className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Exam Time</p>
+                  <p className="font-semibold text-foreground">{data.candidateInfo.examTime}</p>
+                </div>
+              </div>
+            )}
+            {data.candidateInfo.subject && (
+              <div className="flex items-start gap-2">
+                <BookOpen className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Subject</p>
+                  <p className="font-semibold text-foreground">{data.candidateInfo.subject}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <BarChart3 className="w-6 h-6 text-primary" />
