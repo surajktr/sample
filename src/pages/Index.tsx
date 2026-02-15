@@ -8,6 +8,7 @@ import { parseSSCHtml } from '@/lib/parseSSCHtml';
 import type { ScorecardData } from '@/lib/parseSSCHtml';
 import QuestionDetail from '@/components/QuestionDetail';
 import Scorecard from '@/components/Scorecard';
+import ScoreSummaryCard from '@/components/ScoreSummaryCard';
 import { Loader2, FileText, Link } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -109,6 +110,7 @@ const Index = () => {
       {/* Scorecard */}
       {scorecard && (
         <div className="max-w-4xl mx-auto px-4 py-10">
+          <ScoreSummaryCard data={scorecard} />
           <Scorecard data={scorecard} />
           <QuestionDetail data={scorecard} />
         </div>

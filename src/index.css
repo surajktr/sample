@@ -34,6 +34,17 @@
 
     --radius: 0.75rem;
 
+    --correct: 142 71% 45%;
+    --correct-bg: 142 76% 94%;
+    --wrong: 0 84% 60%;
+    --wrong-bg: 0 93% 94%;
+    --right-answer: 210 80% 55%;
+    --right-answer-bg: 210 90% 94%;
+    --bonus: 270 60% 55%;
+    --bonus-bg: 270 80% 94%;
+    --skipped: 220 10% 50%;
+    --skipped-bg: 220 15% 93%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -72,6 +83,17 @@
     --border: 220 20% 20%;
     --input: 220 20% 20%;
     --ring: 210 40% 80%;
+
+    --correct: 142 71% 45%;
+    --correct-bg: 142 50% 15%;
+    --wrong: 0 84% 60%;
+    --wrong-bg: 0 60% 15%;
+    --right-answer: 210 80% 55%;
+    --right-answer-bg: 210 60% 15%;
+    --bonus: 270 60% 60%;
+    --bonus-bg: 270 40% 15%;
+    --skipped: 220 10% 60%;
+    --skipped-bg: 220 20% 18%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;

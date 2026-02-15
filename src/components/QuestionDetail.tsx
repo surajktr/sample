@@ -2,40 +2,88 @@ import { useState } from 'react';
 import type { QuestionResult, ScorecardData } from '@/lib/parseSSCHtml';
 import { getQuestionsForSection, CGL_MAINS_SECTIONS } from '@/lib/parseSSCHtml';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CheckCircle2, XCircle, MinusCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, MinusCircle, FileText, Filter } from 'lucide-react';
+
+type StatusFilter = 'all' | 'correct' | 'wrong' | 'skipped';
 
 interface QuestionDetailProps {
   data: ScorecardData;
 }
 
 const QuestionDetail = ({ data }: QuestionDetailProps) => {
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const allSections = CGL_MAINS_SECTIONS;
 
+  const filterQuestions = (questions: QuestionResult[]) => {
+    if (statusFilter === 'all') return questions;
+    return questions.filter((q) => {
+      if (statusFilter === 'correct') return q.isCorrect;
+      if (statusFilter === 'wrong') return q.chosenOption !== null && !q.isCorrect;
+      if (statusFilter === 'skipped') return q.chosenOption === null;
+      return true;
+    });
+  };
+
+  const getStatusCount = (questions: QuestionResult[], status: StatusFilter) => {
+    if (status === 'all') return questions.length;
+    return questions.filter((q) => {
+      if (status === 'correct') return q.isCorrect;
+      if (status === 'wrong') return q.chosenOption !== null && !q.isCorrect;
+      if (status === 'skipped') return q.chosenOption === null;
+      return true;
+    }).length;
+  };
+
+  // Get all questions for filter counts
+  const allQuestions = data.questions;
+
   return (
-    <div className="w-full max-w-4xl mx-auto mt-10">
-      <h2 className="text-2xl font-bold text-foreground mb-4">Question-wise Details</h2>
+    <div className="w-full max-w-4xl mx-auto mt-8">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <div className="flex items-center gap-2">
+          <FileText className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-bold text-foreground">Question Analysis</h2>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Filter className="w-4 h-4 text-muted-foreground" />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+            className="text-sm border border-border rounded-lg px-3 py-1.5 bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          >
+            <option value="all">All ({getStatusCount(allQuestions, 'all')})</option>
+            <option value="correct">Correct ({getStatusCount(allQuestions, 'correct')})</option>
+            <option value="wrong">Wrong ({getStatusCount(allQuestions, 'wrong')})</option>
+            <option value="skipped">Skipped ({getStatusCount(allQuestions, 'skipped')})</option>
+          </select>
+        </div>
+      </div>
 
       <Tabs defaultValue="A" className="w-full">
         <TabsList className="flex flex-wrap h-auto gap-1 mb-6">
+          <TabsTrigger value="all" className="text-xs sm:text-sm">
+            All
+          </TabsTrigger>
           {allSections.map((sec) => (
             <TabsTrigger key={sec.part} value={sec.part} className="text-xs sm:text-sm">
-              {sec.part}. {sec.subject.split(' ')[0]}
+              {sec.part}
             </TabsTrigger>
           ))}
         </TabsList>
+
+        <TabsContent value="all">
+          <QuestionList questions={filterQuestions(allQuestions)} />
+        </TabsContent>
 
         {allSections.map((sec) => {
           const questions = getQuestionsForSection(data, sec.part);
           return (
             <TabsContent key={sec.part} value={sec.part}>
-              <div className="space-y-4">
-                <p className="text-sm text-muted-foreground mb-4">
-                  {sec.subject} — {questions.length} questions
-                </p>
-                {questions.map((q) => (
-                  <QuestionCard key={q.questionNumber} question={q} sectionPart={sec.part} />
-                ))}
-              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                {sec.subject} — {questions.length} questions
+              </p>
+              <QuestionList questions={filterQuestions(questions)} />
             </TabsContent>
           );
         })}
@@ -44,44 +92,76 @@ const QuestionDetail = ({ data }: QuestionDetailProps) => {
   );
 };
 
-function QuestionCard({ question, sectionPart }: { question: QuestionResult; sectionPart: string }) {
-  const statusColor = question.isCorrect
-    ? 'border-emerald-300 bg-emerald-50/50 dark:border-emerald-800 dark:bg-emerald-950/20'
-    : question.chosenOption
-    ? 'border-red-300 bg-red-50/50 dark:border-red-800 dark:bg-red-950/20'
-    : 'border-border bg-card';
+function QuestionList({ questions }: { questions: QuestionResult[] }) {
+  if (questions.length === 0) {
+    return (
+      <div className="text-center py-12 text-muted-foreground">
+        <MinusCircle className="w-8 h-8 mx-auto mb-2 opacity-40" />
+        <p>No questions match the selected filters</p>
+      </div>
+    );
+  }
+  return (
+    <div className="space-y-4">
+      {questions.map((q) => (
+        <QuestionCard key={q.questionNumber} question={q} />
+      ))}
+    </div>
+  );
+}
 
-  const StatusIcon = question.isCorrect
-    ? CheckCircle2
-    : question.chosenOption
-    ? XCircle
-    : MinusCircle;
+function QuestionCard({ question }: { question: QuestionResult }) {
+  const isCorrect = question.isCorrect;
+  const isWrong = question.chosenOption !== null && !isCorrect;
+  const isSkipped = question.chosenOption === null;
 
-  const statusIconColor = question.isCorrect
-    ? 'text-emerald-500'
-    : question.chosenOption
-    ? 'text-red-500'
-    : 'text-muted-foreground';
+  const getStatusBadge = () => {
+    if (isCorrect) {
+      return (
+        <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'hsl(var(--correct-bg))', color: 'hsl(var(--correct))' }}>
+          +{(CGL_MAINS_SECTIONS.find(s => question.questionNumber >= s.start && question.questionNumber <= s.end)?.marksPerCorrect || 3).toFixed(1)}
+        </span>
+      );
+    }
+    if (isWrong) {
+      const section = CGL_MAINS_SECTIONS.find(s => question.questionNumber >= s.start && question.questionNumber <= s.end);
+      return (
+        <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'hsl(var(--wrong-bg))', color: 'hsl(var(--wrong))' }}>
+          -{(section?.negativePerWrong || 1).toFixed(1)}
+        </span>
+      );
+    }
+    return (
+      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+        0.0
+      </span>
+    );
+  };
+
+  const getOptionClass = (opt: QuestionResult['optionImages'][0]) => {
+    if (opt.isChosen && opt.isCorrect) return { bg: 'hsl(var(--correct-bg) / 0.5)', border: 'hsl(var(--correct))' };
+    if (opt.isChosen && !opt.isCorrect) return { bg: 'hsl(var(--wrong-bg) / 0.5)', border: 'hsl(var(--wrong))' };
+    if (!opt.isChosen && opt.isCorrect && !isCorrect) return { bg: 'hsl(var(--right-answer-bg) / 0.5)', border: 'hsl(var(--right-answer))' };
+    return { bg: 'transparent', border: 'hsl(var(--border))' };
+  };
+
+  const getOptionLabelClass = (opt: QuestionResult['optionImages'][0]) => {
+    if (opt.isChosen && opt.isCorrect) return { bg: 'hsl(var(--correct))', color: 'white' };
+    if (opt.isChosen && !opt.isCorrect) return { bg: 'hsl(var(--wrong))', color: 'white' };
+    if (!opt.isChosen && opt.isCorrect && !isCorrect) return { bg: 'hsl(var(--right-answer))', color: 'white' };
+    return { bg: 'hsl(var(--muted))', color: 'hsl(var(--foreground))' };
+  };
 
   return (
-    <div className={`rounded-xl border-2 p-4 ${statusColor} transition-colors`}>
+    <div className="bg-card rounded-xl border border-border p-4 shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">
             Q.{question.sectionQuestionNumber || question.questionNumber}
           </span>
-          <StatusIcon className={`w-5 h-5 ${statusIconColor}`} />
-          <span className="text-xs text-muted-foreground">{question.status}</span>
+          {getStatusBadge()}
         </div>
-        {question.chosenOption && (
-          <span className="text-xs text-muted-foreground">
-            Chose: <strong>{question.chosenOption}</strong>
-            {question.correctOption && question.chosenOption !== question.correctOption && (
-              <> | Correct: <strong className="text-emerald-600">{question.correctOption}</strong></>
-            )}
-          </span>
-        )}
       </div>
 
       {/* Question Image */}
@@ -92,38 +172,44 @@ function QuestionCard({ question, sectionPart }: { question: QuestionResult; sec
             alt={`Question ${question.sectionQuestionNumber}`}
             className="max-w-full h-auto"
             loading="lazy"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
           />
         </div>
       )}
 
       {/* Options */}
       {question.optionImages.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="space-y-2">
           {question.optionImages.map((opt) => {
-            let optBorder = 'border-border';
-            if (opt.isCorrect) optBorder = 'border-emerald-400 bg-emerald-50/70 dark:bg-emerald-950/30';
-            else if (opt.isChosen && !opt.isCorrect) optBorder = 'border-red-400 bg-red-50/70 dark:bg-red-950/30';
-
+            const optStyle = getOptionClass(opt);
+            const labelStyle = getOptionLabelClass(opt);
             return (
               <div
                 key={opt.optionNumber}
-                className={`flex items-start gap-2 rounded-lg border p-2 ${optBorder}`}
+                className="flex items-center gap-2 rounded-lg p-2 transition-colors"
+                style={{ backgroundColor: optStyle.bg, border: `1px solid ${optStyle.border}` }}
               >
-                <span className="text-xs font-bold text-muted-foreground mt-1 shrink-0">
-                  {opt.optionNumber}.
+                <span
+                  className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0"
+                  style={{ backgroundColor: labelStyle.bg, color: labelStyle.color }}
+                >
+                  {opt.optionNumber}
                 </span>
                 {opt.imageUrl ? (
                   <img
                     src={opt.imageUrl}
                     alt={`Option ${opt.optionNumber}`}
-                    className="max-w-full h-auto"
+                    className="max-w-full h-auto max-h-16"
                     loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
                   />
                 ) : (
-                  <span className="text-sm text-muted-foreground">No image</span>
+                  <span className="text-sm text-muted-foreground">Option {opt.optionNumber}</span>
                 )}
-                {opt.isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-1" />}
-                {opt.isChosen && !opt.isCorrect && <XCircle className="w-4 h-4 text-red-500 shrink-0 mt-1" />}
               </div>
             );
           })}

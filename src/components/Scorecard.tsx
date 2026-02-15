@@ -1,205 +1,185 @@
 import type { ScorecardData } from '@/lib/parseSSCHtml';
-import { BarChart3, User, MapPin, Calendar, Clock, BookOpen } from 'lucide-react';
+import { BarChart3 } from 'lucide-react';
 
 interface ScorecardProps {
   data: ScorecardData;
 }
 
 const Scorecard = ({ data }: ScorecardProps) => {
-  return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Candidate Info */}
-      {data.candidateInfo && (
-        <div className="bg-card rounded-xl border border-border shadow-sm p-6 mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <User className="w-5 h-5 text-primary" />
-            <h2 className="text-xl font-bold text-foreground">Candidate Information</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {data.candidateInfo.candidateName && (
-              <div className="flex items-start gap-2">
-                <User className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Name</p>
-                  <p className="font-semibold text-foreground">{data.candidateInfo.candidateName}</p>
-                </div>
-              </div>
-            )}
-            {data.candidateInfo.rollNumber && (
-              <div className="flex items-start gap-2">
-                <BookOpen className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Roll Number</p>
-                  <p className="font-semibold text-foreground">{data.candidateInfo.rollNumber}</p>
-                </div>
-              </div>
-            )}
-            {data.candidateInfo.venueName && (
-              <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Venue</p>
-                  <p className="font-semibold text-foreground">{data.candidateInfo.venueName}</p>
-                </div>
-              </div>
-            )}
-            {data.candidateInfo.examDate && (
-              <div className="flex items-start gap-2">
-                <Calendar className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Exam Date</p>
-                  <p className="font-semibold text-foreground">{data.candidateInfo.examDate}</p>
-                </div>
-              </div>
-            )}
-            {data.candidateInfo.examTime && (
-              <div className="flex items-start gap-2">
-                <Clock className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Exam Time</p>
-                  <p className="font-semibold text-foreground">{data.candidateInfo.examTime}</p>
-                </div>
-              </div>
-            )}
-            {data.candidateInfo.subject && (
-              <div className="flex items-start gap-2">
-                <BookOpen className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Subject</p>
-                  <p className="font-semibold text-foreground">{data.candidateInfo.subject}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+  const nonQualifying = data.sections;
+  const qualifying = data.qualifyingSection;
 
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <BarChart3 className="w-6 h-6 text-primary" />
-        <h2 className="text-2xl font-bold text-foreground">Section-wise Breakdown</h2>
+  return (
+    <div className="w-full max-w-4xl mx-auto mb-6">
+      <div className="flex items-center gap-3 mb-4">
+        <BarChart3 className="w-5 h-5 text-primary" />
+        <h2 className="text-xl font-bold text-foreground">Section-wise Breakdown</h2>
       </div>
 
-      {/* Table */}
-      <div className="bg-card rounded-xl border border-border overflow-hidden shadow-sm">
-        {/* Table Header */}
-        <div className="grid grid-cols-7 gap-2 px-6 py-4 bg-muted/50 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          <div>Part</div>
-          <div className="col-span-2">Subject</div>
-          <div className="text-center">Correct</div>
-          <div className="text-center">Wrong</div>
-          <div className="text-center">Skipped</div>
-          <div className="text-right">Score</div>
-        </div>
-
-        {/* Section Rows */}
-        {data.sections.map((section) => (
-          <div
-            key={section.part}
-            className="grid grid-cols-7 gap-2 px-6 py-5 border-t border-border items-center hover:bg-muted/30 transition-colors"
-          >
-            <div>
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-sm">
-                {section.part}
-              </span>
-            </div>
-            <div className="col-span-2">
-              <p className="font-medium text-foreground">{section.subject}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                +{section.marksPerCorrect} / -{section.negativePerWrong}
-              </p>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-lg dark:bg-emerald-950/30 dark:text-emerald-400">
-                {section.correct}
-              </span>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-50 text-red-500 font-bold text-lg dark:bg-red-950/30 dark:text-red-400">
-                {section.wrong}
-              </span>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-muted text-muted-foreground font-bold text-lg">
-                {section.skipped}
-              </span>
-            </div>
-            <div className="text-right">
-              <span className="text-2xl font-bold text-foreground">{section.score.toFixed(1)}</span>
-              <span className="text-sm text-muted-foreground"> /{section.maxMarks}</span>
-            </div>
-          </div>
+      {/* Mobile Card View */}
+      <div className="block lg:hidden space-y-3">
+        {nonQualifying.map((section) => (
+          <SectionCard key={section.part} section={section} />
         ))}
 
-        {/* Total Row */}
-        <div className="grid grid-cols-7 gap-2 px-6 py-5 border-t-2 border-primary/20 bg-primary/5 items-center">
-          <div className="col-span-3">
-            <p className="text-xl font-bold text-foreground">Total</p>
+        {/* Total Card */}
+        <div className="bg-primary/5 rounded-xl border-2 border-primary/20 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-lg font-bold text-foreground">Total</span>
           </div>
-          <div className="text-center">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-lg dark:bg-emerald-950/50 dark:text-emerald-400">
-              {data.totalCorrect}
-            </span>
-          </div>
-          <div className="text-center">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-100 text-red-600 font-bold text-lg dark:bg-red-950/50 dark:text-red-400">
-              {data.totalWrong}
-            </span>
-          </div>
-          <div className="text-center">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-muted text-muted-foreground font-bold text-lg">
-              {data.totalSkipped}
-            </span>
-          </div>
-          <div className="text-right">
-            <span className="text-2xl font-bold text-foreground">{data.totalScore.toFixed(1)}</span>
-            <span className="text-sm text-muted-foreground"> /{data.totalMaxMarks}</span>
+          <div className="grid grid-cols-4 gap-2 text-center">
+            <StatCell value={data.totalCorrect} label="Correct" color="correct" />
+            <StatCell value={data.totalWrong} label="Wrong" color="wrong" />
+            <StatCell value={data.totalSkipped} label="Skip" color="muted" />
+            <div>
+              <p className="text-lg font-bold text-foreground">{data.totalScore.toFixed(1)}</p>
+              <p className="text-[10px] text-muted-foreground">/{data.totalMaxMarks}</p>
+            </div>
           </div>
         </div>
 
-        {/* Qualifying Section */}
-        {data.qualifyingSection && (
-          <div className="grid grid-cols-7 gap-2 px-6 py-5 border-t border-border items-center bg-muted/20">
-            <div>
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-sm">
-                {data.qualifyingSection.part}
-              </span>
-            </div>
-            <div className="col-span-2">
-              <p className="font-medium text-foreground">
-                {data.qualifyingSection.subject}
-                <span className="ml-2 text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">
-                  Qualifying
-                </span>
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                +{data.qualifyingSection.marksPerCorrect} / -{data.qualifyingSection.negativePerWrong}
-              </p>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-lg dark:bg-emerald-950/30 dark:text-emerald-400">
-                {data.qualifyingSection.correct}
-              </span>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-50 text-red-500 font-bold text-lg dark:bg-red-950/30 dark:text-red-400">
-                {data.qualifyingSection.wrong}
-              </span>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-muted text-muted-foreground font-bold text-lg">
-                {data.qualifyingSection.skipped}
-              </span>
-            </div>
-            <div className="text-right">
-              <span className="text-2xl font-bold text-foreground">{data.qualifyingSection.score.toFixed(1)}</span>
-              <span className="text-sm text-muted-foreground"> /{data.qualifyingSection.maxMarks}</span>
-            </div>
-          </div>
+        {qualifying && (
+          <SectionCard section={qualifying} isQualifying />
         )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden lg:block bg-card rounded-xl border border-border overflow-hidden shadow-sm">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-muted/50 text-xs uppercase tracking-wider text-muted-foreground">
+              <th className="px-4 py-3 text-left font-semibold">Part</th>
+              <th className="px-4 py-3 text-left font-semibold">Subject</th>
+              <th className="px-4 py-3 text-center font-semibold">Marks</th>
+              <th className="px-4 py-3 text-center font-semibold">Correct</th>
+              <th className="px-4 py-3 text-center font-semibold">Wrong</th>
+              <th className="px-4 py-3 text-center font-semibold">Skipped</th>
+              <th className="px-4 py-3 text-right font-semibold">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {nonQualifying.map((section) => (
+              <tr key={section.part} className="border-t border-border hover:bg-muted/30 transition-colors">
+                <td className="px-4 py-4">
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-xs">
+                    {section.part}
+                  </span>
+                </td>
+                <td className="px-4 py-4">
+                  <p className="font-medium text-foreground">{section.subject}</p>
+                </td>
+                <td className="px-4 py-4 text-center">
+                  <span className="text-xs text-muted-foreground">+{section.marksPerCorrect} / -{section.negativePerWrong}</span>
+                </td>
+                <td className="px-4 py-4 text-center">
+                  <span className="font-bold" style={{ color: 'hsl(var(--correct))' }}>{section.correct}</span>
+                </td>
+                <td className="px-4 py-4 text-center">
+                  <span className="font-bold" style={{ color: 'hsl(var(--wrong))' }}>{section.wrong}</span>
+                </td>
+                <td className="px-4 py-4 text-center">
+                  <span className="font-bold text-muted-foreground">{section.skipped}</span>
+                </td>
+                <td className="px-4 py-4 text-right">
+                  <span className="text-lg font-bold text-foreground">{section.score.toFixed(1)}</span>
+                  <span className="text-xs text-muted-foreground">/{section.maxMarks}</span>
+                </td>
+              </tr>
+            ))}
+
+            {/* Total Row */}
+            <tr className="border-t-2 border-primary/20 bg-primary/5">
+              <td className="px-4 py-4 font-bold text-foreground" colSpan={3}>Total</td>
+              <td className="px-4 py-4 text-center">
+                <span className="font-bold" style={{ color: 'hsl(var(--correct))' }}>{data.totalCorrect}</span>
+              </td>
+              <td className="px-4 py-4 text-center">
+                <span className="font-bold" style={{ color: 'hsl(var(--wrong))' }}>{data.totalWrong}</span>
+              </td>
+              <td className="px-4 py-4 text-center">
+                <span className="font-bold text-muted-foreground">{data.totalSkipped}</span>
+              </td>
+              <td className="px-4 py-4 text-right">
+                <span className="text-xl font-bold text-foreground">{data.totalScore.toFixed(1)}</span>
+                <span className="text-xs text-muted-foreground">/{data.totalMaxMarks}</span>
+              </td>
+            </tr>
+
+            {/* Qualifying */}
+            {qualifying && (
+              <tr className="border-t border-border bg-muted/20">
+                <td className="px-4 py-4">
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-xs">
+                    {qualifying.part}
+                  </span>
+                </td>
+                <td className="px-4 py-4">
+                  <span className="font-medium text-foreground">{qualifying.subject}</span>
+                  <span className="ml-2 text-[10px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">Qualifying</span>
+                </td>
+                <td className="px-4 py-4 text-center">
+                  <span className="text-xs text-muted-foreground">+{qualifying.marksPerCorrect} / -{qualifying.negativePerWrong}</span>
+                </td>
+                <td className="px-4 py-4 text-center">
+                  <span className="font-bold" style={{ color: 'hsl(var(--correct))' }}>{qualifying.correct}</span>
+                </td>
+                <td className="px-4 py-4 text-center">
+                  <span className="font-bold" style={{ color: 'hsl(var(--wrong))' }}>{qualifying.wrong}</span>
+                </td>
+                <td className="px-4 py-4 text-center">
+                  <span className="font-bold text-muted-foreground">{qualifying.skipped}</span>
+                </td>
+                <td className="px-4 py-4 text-right">
+                  <span className="text-lg font-bold text-foreground">{qualifying.score.toFixed(1)}</span>
+                  <span className="text-xs text-muted-foreground">/{qualifying.maxMarks}</span>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
+
+function SectionCard({ section, isQualifying = false }: { section: { part: string; subject: string; correct: number; wrong: number; skipped: number; score: number; maxMarks: number; marksPerCorrect: number; negativePerWrong: number }; isQualifying?: boolean }) {
+  return (
+    <div className="bg-card rounded-xl border border-border p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-xs">
+            {section.part}
+          </span>
+          <span className="font-medium text-foreground text-sm">{section.subject}</span>
+        </div>
+        {isQualifying && (
+          <span className="text-[10px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full">Qualifying</span>
+        )}
+      </div>
+      <div className="grid grid-cols-4 gap-2 text-center mb-2">
+        <StatCell value={section.correct} label="Correct" color="correct" />
+        <StatCell value={section.wrong} label="Wrong" color="wrong" />
+        <StatCell value={section.skipped} label="Skip" color="muted" />
+        <div>
+          <p className="text-lg font-bold text-foreground">{section.score.toFixed(1)}</p>
+          <p className="text-[10px] text-muted-foreground">/{section.maxMarks}</p>
+        </div>
+      </div>
+      <p className="text-[10px] text-muted-foreground">+{section.marksPerCorrect} / -{section.negativePerWrong}</p>
+    </div>
+  );
+}
+
+function StatCell({ value, label, color }: { value: number; label: string; color: string }) {
+  const colorStyle = color === 'muted' ? {} : { color: `hsl(var(--${color}))` };
+  return (
+    <div>
+      <p className={`text-lg font-bold ${color === 'muted' ? 'text-muted-foreground' : ''}`} style={colorStyle}>
+        {value}
+      </p>
+      <p className="text-[10px] text-muted-foreground">{label}</p>
+    </div>
+  );
+}
 
 export default Scorecard;
