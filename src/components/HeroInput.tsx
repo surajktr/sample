@@ -8,45 +8,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FileText, BarChart3, Download, Search } from 'lucide-react';
+import { FileText, BarChart3, Download, Search, Globe } from 'lucide-react';
+import { EXAM_CATEGORIES, getExamsByCategory } from '@/lib/examConfig';
 
 interface HeroInputProps {
-  onAnalyze: (url: string) => void;
+  onAnalyze: (url: string, examType: string, language: string) => void;
   loading: boolean;
 }
 
-const CATEGORIES = [
-  { value: 'ssc', label: 'SSC Exams', icon: '🏛️' },
-  { value: 'railway', label: 'Railway Exams', icon: '🚂' },
-  { value: 'ib', label: 'Intelligence Bureau', icon: '🕵️' },
-  { value: 'bank', label: 'Bank Exams', icon: '🏦' },
-  { value: 'police', label: 'Police Exams', icon: '👮' },
-];
-
-const SSC_EXAMS = [
-  { value: 'cgl-1', label: 'SSC CGL Tier-I', color: 'bg-emerald-400' },
-  { value: 'cgl-2', label: 'SSC CGL Tier-II', color: 'bg-emerald-500' },
-  { value: 'chsl-1', label: 'SSC CHSL Tier-I', color: 'bg-purple-400' },
-  { value: 'chsl-2', label: 'SSC CHSL Tier-II', color: 'bg-purple-500' },
-  { value: 'cpo-1', label: 'SSC CPO Paper-I', color: 'bg-blue-400' },
-  { value: 'cpo-2', label: 'SSC CPO Paper-II', color: 'bg-blue-500' },
-  { value: 'mts', label: 'SSC MTS', color: 'bg-orange-400' },
-  { value: 'gd', label: 'SSC GD', color: 'bg-amber-700' },
-  { value: 'steno', label: 'SSC Steno', color: 'bg-rose-400' },
-];
-
 const HeroInput = ({ onAnalyze, loading }: HeroInputProps) => {
-  const [category, setCategory] = useState('ssc');
-  const [exam, setExam] = useState('cgl-2');
+  const [category, setCategory] = useState('SSC');
+  const [examType, setExamType] = useState('SSC_CGL_MAINS');
+  const [language, setLanguage] = useState('hindi');
   const [url, setUrl] = useState('');
 
+  const exams = getExamsByCategory(category);
+
+  const handleCategoryChange = (val: string) => {
+    setCategory(val);
+    const newExams = getExamsByCategory(val);
+    if (newExams.length > 0) setExamType(newExams[0].id);
+  };
+
   const handleSubmit = () => {
-    if (url.trim()) onAnalyze(url.trim());
+    if (url.trim()) onAnalyze(url.trim(), examType, language);
   };
 
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 py-16 bg-gradient-to-b from-muted/40 to-background">
-      {/* Title */}
       <div className="text-center mb-10 max-w-2xl">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground mb-4 leading-tight">
           Analyze Your{' '}
@@ -54,50 +43,59 @@ const HeroInput = ({ onAnalyze, loading }: HeroInputProps) => {
         </h1>
         <p className="text-muted-foreground text-lg">
           Get detailed score analysis, section-wise breakdown, and question-level insights
-          from your SSC CGL response sheet in seconds.
+          from your exam response sheet in seconds.
         </p>
       </div>
 
-      {/* Selectors */}
       <div className="w-full max-w-3xl space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Select value={category} onValueChange={setCategory}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Select value={category} onValueChange={handleCategoryChange}>
             <SelectTrigger className="bg-card h-12">
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
-              {CATEGORIES.map((c) => (
-                <SelectItem key={c.value} value={c.value}>
+              {EXAM_CATEGORIES.map((c) => (
+                <SelectItem key={c.id} value={c.id}>
                   <span className="flex items-center gap-2">
-                    <span>{c.icon}</span> {c.label}
+                    <span>{c.emoji}</span> {c.label}
                   </span>
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
-          <Select value={exam} onValueChange={setExam}>
+          <Select value={examType} onValueChange={setExamType}>
             <SelectTrigger className="bg-card h-12">
               <SelectValue placeholder="Select Exam" />
             </SelectTrigger>
             <SelectContent>
-              {SSC_EXAMS.map((e) => (
-                <SelectItem key={e.value} value={e.value}>
-                  <span className="flex items-center gap-2">
-                    <span className={`w-2.5 h-2.5 rounded-full ${e.color}`} />
-                    {e.label}
-                  </span>
+              {exams.map((e) => (
+                <SelectItem key={e.id} value={e.id}>
+                  {e.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+
+          <Select value={language} onValueChange={setLanguage}>
+            <SelectTrigger className="bg-card h-12">
+              <SelectValue placeholder="Language" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="hindi">
+                <span className="flex items-center gap-2"><Globe className="w-4 h-4" /> Hindi</span>
+              </SelectItem>
+              <SelectItem value="english">
+                <span className="flex items-center gap-2"><Globe className="w-4 h-4" /> English</span>
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* URL Input */}
         <div className="flex gap-3 items-center bg-card border border-border rounded-xl px-4 py-2 shadow-sm">
           <Search className="w-5 h-5 text-muted-foreground shrink-0" />
           <Input
-            placeholder="Paste your SSC response sheet URL here..."
+            placeholder="Paste your response sheet URL here..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
@@ -114,7 +112,6 @@ const HeroInput = ({ onAnalyze, loading }: HeroInputProps) => {
         </div>
       </div>
 
-      {/* Feature Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-14 max-w-3xl w-full">
         {[
           { icon: FileText, title: 'Extract Data', desc: 'Automatically extract all question and answer data from your response sheet.' },

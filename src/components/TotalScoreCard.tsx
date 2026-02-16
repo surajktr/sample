@@ -13,17 +13,21 @@ const TotalScoreCard = ({ data }: TotalScoreCardProps) => {
   const accuracy = totalAttempted > 0 ? (data.totalCorrect / totalAttempted) * 100 : 0;
   const attemptRate = totalQuestions > 0 ? (totalAttempted / totalQuestions) * 100 : 0;
 
+  // Get marking scheme from exam config
+  const markingLabel = data.examConfig
+    ? `+${data.examConfig.subjects[0]?.correctMarks} correct, -${data.examConfig.subjects[0]?.negativeMarks} wrong`
+    : '';
+
   return (
     <div className="bg-card rounded-xl border border-border shadow-sm p-6">
       <div className="flex items-center gap-3 mb-4">
         <Trophy className="w-6 h-6 text-primary" />
         <div>
           <h3 className="font-bold text-foreground">Total Score</h3>
-          <p className="text-xs text-muted-foreground">+3 correct, -1 wrong</p>
+          {markingLabel && <p className="text-xs text-muted-foreground">{markingLabel}</p>}
         </div>
       </div>
 
-      {/* Big score */}
       <div className="flex items-end gap-4 mb-3">
         <div>
           <span className="text-5xl font-extrabold text-foreground">{data.totalScore.toFixed(1)}</span>

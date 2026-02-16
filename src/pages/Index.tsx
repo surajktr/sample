@@ -14,20 +14,22 @@ import QuestionAnalysis from '@/components/QuestionAnalysis';
 const Index = () => {
   const [loading, setLoading] = useState(false);
   const [scorecard, setScorecard] = useState<ScorecardData | null>(null);
+  const [language, setLanguage] = useState('hindi');
   const { toast } = useToast();
 
-  const handleAnalyze = async (url: string) => {
+  const handleAnalyze = async (url: string, examType: string, lang: string) => {
     setLoading(true);
     setScorecard(null);
+    setLanguage(lang);
     try {
-      const { data, error } = await supabase.functions.invoke('fetch-ssc-html', {
+      const { data, error } = await supabase.functions.invoke('analyze-response-sheet', {
         body: { url },
       });
       if (error || !data?.success) {
         toast({ title: 'Error', description: data?.error || error?.message || 'Failed to fetch', variant: 'destructive' });
         return;
       }
-      const result = parseSSCHtml(data.html);
+      const result = parseSSCHtml(data.html, examType);
       setScorecard(result);
     } catch (err: any) {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
@@ -38,7 +40,6 @@ const Index = () => {
 
   const handleBack = () => setScorecard(null);
 
-  // Loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -47,13 +48,11 @@ const Index = () => {
     );
   }
 
-  // Results state
   if (scorecard) {
     return (
       <div className="min-h-screen bg-background">
         <ResultsHeader data={scorecard} onBack={handleBack} />
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 space-y-8">
-          {/* Top row: Candidate Info + Total Score */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             <div className="lg:col-span-3">
               {scorecard.candidateInfo && <CandidateInfoCard info={scorecard.candidateInfo} />}
@@ -63,13 +62,12 @@ const Index = () => {
             </div>
           </div>
           <SectionBreakdown data={scorecard} />
-          <QuestionAnalysis data={scorecard} />
+          <QuestionAnalysis data={scorecard} language={language} />
         </div>
       </div>
     );
   }
 
-  // Input state
   return (
     <div className="min-h-screen bg-background">
       <HeroInput onAnalyze={handleAnalyze} loading={loading} />

@@ -13,7 +13,6 @@ const SectionBreakdown = ({ data }: SectionBreakdownProps) => {
         <h3 className="font-bold text-foreground text-lg">Section-wise Breakdown</h3>
       </div>
 
-      {/* Header */}
       <div className="grid grid-cols-7 gap-2 px-6 py-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
         <div>Part</div>
         <div className="col-span-2">Subject</div>
@@ -23,7 +22,6 @@ const SectionBreakdown = ({ data }: SectionBreakdownProps) => {
         <div className="text-right">Score</div>
       </div>
 
-      {/* Rows */}
       {data.sections.map((sec) => (
         <div key={sec.part} className="grid grid-cols-7 gap-2 px-6 py-4 border-b border-border/50 items-center hover:bg-muted/20 transition-colors">
           <div>
@@ -54,7 +52,6 @@ const SectionBreakdown = ({ data }: SectionBreakdownProps) => {
         </div>
       ))}
 
-      {/* Qualifying */}
       {data.qualifyingSection && (
         <div className="grid grid-cols-7 gap-2 px-6 py-4 border-b border-border/50 items-center bg-muted/10">
           <div>
