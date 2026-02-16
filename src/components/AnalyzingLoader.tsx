@@ -29,7 +29,7 @@ const AnalyzingLoader = () => {
   return (
     <div className="max-w-lg mx-auto py-16 px-4 text-center">
       <h2 className="text-2xl font-bold text-foreground mb-2">Analyzing Response Sheet</h2>
-      <p className="text-muted-foreground mb-6">Please wait while we process your data</p>
+      <p className="text-muted-foreground mb-6">Pleas wait while we process your data</p>
       <Progress value={progress} className="h-3 mb-8" />
       <div className="space-y-3">
         {steps.map((step, i) => {
