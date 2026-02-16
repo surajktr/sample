@@ -9,7 +9,8 @@ import ResultsHeader from '@/components/ResultsHeader';
 import CandidateInfoCard from '@/components/CandidateInfoCard';
 import TotalScoreCard from '@/components/TotalScoreCard';
 import SectionBreakdown from '@/components/SectionBreakdown';
-import QuestionAnalysis from '@/components/QuestionAnalysis';
+import QuestionsTable from '@/components/QuestionsTable';
+import DownloadOptions from '@/components/DownloadOptions';
 
 const Index = () => {
   const [loading, setLoading] = useState(false);
@@ -62,7 +63,8 @@ const Index = () => {
             </div>
           </div>
           <SectionBreakdown data={scorecard} />
-          <QuestionAnalysis data={scorecard} language={language} />
+          <DownloadOptions data={scorecard} />
+          <QuestionsTable data={scorecard} />
         </div>
       </div>
     );

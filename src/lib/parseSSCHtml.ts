@@ -14,7 +14,7 @@ export interface QuestionResult {
   questionImageUrlHindi: string | null;
   questionImageUrlEnglish: string | null;
   questionText: string | null;
-  optionImages: { optionNumber: number; imageUrl: string | null; isCorrect: boolean; isChosen: boolean }[];
+  optionImages: { optionNumber: number; imageUrl: string | null; text: string | null; isCorrect: boolean; isChosen: boolean }[];
 }
 
 export interface SectionResult {
@@ -109,15 +109,157 @@ function extractBaseUrl(html: string): string {
 function resolveImageUrl(src: string, baseUrl: string): string {
   if (!src) return '';
   if (src.startsWith('http')) return src;
+  if (src.startsWith('data:')) return src;
   if (src.startsWith('/')) return 'https://ssc.digialm.com' + src;
   return baseUrl + src;
 }
 
 function getBilingualUrls(url: string | null): { hindi: string | null; english: string | null } {
   if (!url) return { hindi: null, english: null };
-  if (url.includes('_HI.')) return { hindi: url, english: url.replace('_HI.', '_EN.') };
-  if (url.includes('_EN.')) return { hindi: url.replace('_EN.', '_HI.'), english: url };
+  // Handle both uppercase (_HI.jpg, _EN.jpg) and lowercase (_hi.jpg, _en.jpg) suffixes
+  if (url.toLowerCase().includes('_hi.')) {
+    return { 
+      hindi: url, 
+      english: url.replace(/_hi\./i, '_en.') 
+    };
+  }
+  if (url.toLowerCase().includes('_en.')) {
+    return { 
+      hindi: url.replace(/_en\./i, '_hi.'), 
+      english: url 
+    };
+  }
   return { hindi: null, english: null };
+}
+
+function autoFormatLongText(text: string): string {
+  // If already multi-line, keep as-is.
+  if (text.includes('\n')) return text;
+  // Only apply to long strings; avoid over-formatting short questions.
+  if (text.length < 160) return text;
+
+  // Insert line breaks after sentence terminators.
+  // Handles cases like: ". ...? ..." and ". ... The".
+  return text
+    .replace(/([.?!])\s+(?=[A-Z(])/g, '$1\n')
+    .replace(/;\s+(?=[A-Z(])/g, ';\n');
+}
+
+function extractTextWithLineBreaks(element: Element | null): string | null {
+  if (!element) return null;
+  
+  // Clone the element to avoid modifying the original
+  const clone = element.cloneNode(true) as Element;
+  
+  // Remove img tags
+  clone.querySelectorAll('img').forEach(img => img.remove());
+  
+  // Normalize superscripts so math like cm^2 / cm^3 are readable in plain text
+  clone.querySelectorAll('sup').forEach(sup => {
+    const value = (sup.textContent || '').trim();
+    let replacement = '';
+    if (value === '2') replacement = '²';
+    else if (value === '3') replacement = '³';
+    else if (value === '1') replacement = '¹';
+    else if (value === '0') replacement = '⁰';
+    else if (value.toLowerCase() === 'st' || value.toLowerCase() === 'nd' || 
+             value.toLowerCase() === 'rd' || value.toLowerCase() === 'th') {
+      // For ordinals like 1st, 2nd, 3rd, 4th - just append directly without ^
+      replacement = value;
+    }
+    else replacement = '^' + value;
+    sup.replaceWith(document.createTextNode(replacement));
+  });
+  
+  // Replace <br> tags with newlines
+  clone.querySelectorAll('br').forEach(br => {
+    br.replaceWith('\n');
+  });
+  
+  // Get text content
+  let text = clone.textContent || '';
+
+  // Remove HTML/CSS artifacts from Word/Excel content
+  text = text.replace(/<!--[\s\S]*?-->/g, ''); // Remove HTML comments
+  text = text.replace(/<[^>]*>/g, ''); // Remove any remaining HTML tags
+  text = text.replace(/&[^;]+;/g, ' '); // Replace HTML entities with space
+  text = text.replace(/\{[^}]*\}/g, ''); // Remove CSS-like content
+  text = text.replace(/mso-data-placement:[^;]*;?/g, ''); // Remove MS Office specific styles
+
+  // IB/Railway pages often separate statements with tabs; treat them as line breaks.
+  text = text.replace(/\t+/g, '\n');
+  
+  // Clean up: trim each line and remove excessive whitespace
+  text = text.split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+
+  text = autoFormatLongText(text);
+  
+  return text || null;
+}
+
+function extractOptionText(element: Element | null): string | null {
+  if (!element) return null;
+  
+  // Clone the element
+  const clone = element.cloneNode(true) as Element;
+  
+  // Remove img tags
+  clone.querySelectorAll('img').forEach(img => img.remove());
+  
+  // Normalize superscripts for math units (e.g., cm², m³)
+  clone.querySelectorAll('sup').forEach(sup => {
+    const value = (sup.textContent || '').trim();
+    let replacement = '';
+    if (value === '2') replacement = '²';
+    else if (value === '3') replacement = '³';
+    else if (value === '1') replacement = '¹';
+    else if (value === '0') replacement = '⁰';
+    else if (value.toLowerCase() === 'st' || value.toLowerCase() === 'nd' || 
+             value.toLowerCase() === 'rd' || value.toLowerCase() === 'th') {
+      // For ordinals like 1st, 2nd, 3rd, 4th - just append directly without ^
+      replacement = value;
+    }
+    else replacement = '^' + value;
+    sup.replaceWith(document.createTextNode(replacement));
+  });
+  
+  // Replace <br> tags with newlines
+  clone.querySelectorAll('br').forEach(br => {
+    br.replaceWith('\n');
+  });
+  
+  // Get text content
+  let text = clone.textContent || '';
+  
+  // Treat tabs as line breaks (common in IB/Railway statement-style questions)
+  text = text.replace(/\t+/g, '\n');
+  
+  // Remove HTML/CSS artifacts from Word/Excel content
+  text = text.replace(/<!--[\s\S]*?-->/g, ''); // Remove HTML comments
+  text = text.replace(/<[^>]*>/g, ''); // Remove any remaining HTML tags
+  text = text.replace(/&[^;]+;/g, ' '); // Replace HTML entities with space
+  text = text.replace(/\{[^}]*\}/g, ''); // Remove CSS-like content
+  text = text.replace(/mso-data-placement:[^;]*;?/g, ''); // Remove MS Office specific styles
+  text = text.replace(/mso-[^:]+:[^;]*;?/g, ''); // Remove MS Office specific styles
+  text = text.replace(/lang=[^;]*;?/g, ''); // Remove language attributes
+  text = text.replace(/style="[^"]*"/g, ''); // Remove inline styles
+  text = text.replace(/class="[^"]*"/g, ''); // Remove class attributes
+
+  // Remove option marker prefix (e.g., "1.", "2.", "A)", "B.", "C:")
+  text = text.replace(/^\s*(?:\d+|[A-D])[)\.:]\s*/i, '');
+  
+  // Clean up: trim each line
+  text = text.split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+
+  text = autoFormatLongText(text);
+  
+  return text || null;
 }
 
 function mapQuestionToSection(qNum: number, examConfig: ExamConfig | null): { part: string; subject: string; correctMarks: number; negativeMarks: number } {
@@ -197,9 +339,13 @@ function extractAssessmentQuestions(doc: Document, baseUrl: string, examConfig: 
       const td = tr.querySelector('td.bold[style*="text-align: left"]');
       if (td) {
         const img = td.querySelector('img');
-        if (img) questionImageUrl = resolveImageUrl(img.getAttribute('src') || '', baseUrl);
-        const text = td.textContent?.trim();
-        if (text && text.length > 5) questionText = text;
+        if (img) {
+          questionImageUrl = resolveImageUrl(img.getAttribute('src') || '', baseUrl);
+        } else {
+          // Only extract text if there's no image in the question
+          const text = extractTextWithLineBreaks(td);
+          if (text && text.length > 5) questionText = text;
+        }
         break;
       }
     }
@@ -232,10 +378,21 @@ function extractAssessmentQuestions(doc: Document, baseUrl: string, examConfig: 
       const optNum = parseInt(numMatch[1]);
       const isRight = td.classList.contains('rightAns');
       if (isRight) { correctOption = optNum; hasRightAns = true; }
-      const img = td.querySelector('img[name]');
+      
+      // Find option image (exclude tick/cross images)
       let imageUrl: string | null = null;
-      if (img) imageUrl = resolveImageUrl(img.getAttribute('src') || '', baseUrl);
-      optionImages.push({ optionNumber: optNum, imageUrl, isCorrect: isRight, isChosen: chosenOption === optNum });
+      const imgs = td.querySelectorAll('img');
+      for (const img of imgs) {
+        const src = img.getAttribute('src') || '';
+        // Skip tick and cross indicator images
+        if (!src.includes('tick.png') && !src.includes('cross.png')) {
+          imageUrl = resolveImageUrl(src, baseUrl);
+          break;
+        }
+      }
+      
+      const optionText = extractOptionText(td);
+      optionImages.push({ optionNumber: optNum, imageUrl, text: optionText, isCorrect: isRight, isChosen: chosenOption === optNum });
     });
 
     const sectionInfo = mapQuestionToSection(sequentialIndex, examConfig);
@@ -322,7 +479,8 @@ function extractViewCandQuestions(doc: Document, baseUrl: string, examConfig: Ex
             let imgUrl: string | null = null;
             if (optImg) imgUrl = resolveImageUrl(optImg.getAttribute('src') || '', baseUrl);
 
-            optionImages.push({ optionNumber: optNum, imageUrl: imgUrl, isCorrect: isCorrectOpt, isChosen: isRed });
+            const optText = extractOptionText(optRow.querySelector('td'));
+            optionImages.push({ optionNumber: optNum, imageUrl: imgUrl, text: optText, isCorrect: isCorrectOpt, isChosen: isRed });
             j++;
           } else {
             break;

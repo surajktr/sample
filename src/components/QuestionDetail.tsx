@@ -101,11 +101,19 @@ function QuestionCard({ question }: { question: QuestionResult }) {
             return (
               <div key={opt.optionNumber} className={`flex items-start gap-2 rounded-lg border p-2 ${optBorder}`}>
                 <span className="text-xs font-bold text-muted-foreground mt-1 shrink-0">{opt.optionNumber}.</span>
-                {opt.imageUrl ? (
-                  <img src={opt.imageUrl} alt={`Option ${opt.optionNumber}`} className="max-w-full h-auto" loading="lazy" />
-                ) : (
-                  <span className="text-sm text-muted-foreground">No image</span>
-                )}
+                <div className="flex-1 min-w-0">
+                  {opt.imageUrl && (
+                    <img src={opt.imageUrl} alt={`Option ${opt.optionNumber}`} className="max-w-full h-auto mb-1" loading="lazy" />
+                  )}
+                  {opt.text && (
+                    <div className="text-sm text-foreground whitespace-pre-wrap break-words">
+                      {opt.text}
+                    </div>
+                  )}
+                  {!opt.imageUrl && !opt.text && (
+                    <span className="text-sm text-muted-foreground">No content</span>
+                  )}
+                </div>
                 {opt.isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-1" />}
                 {opt.isChosen && !opt.isCorrect && <XCircle className="w-4 h-4 text-red-500 shrink-0 mt-1" />}
               </div>

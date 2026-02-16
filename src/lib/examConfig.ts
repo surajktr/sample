@@ -34,11 +34,11 @@ export const EXAM_CATEGORIES: ExamCategory[] = [
 ];
 
 export const EXAM_CONFIGS: ExamConfig[] = [
-  // SSC Exams
+  // SSC Exams - Official Notification Sequence
   {
-    id: 'SSC_CGL_PRE', name: 'SSC CGL Tier-I', category: 'SSC', totalQuestions: 100, maxMarks: 200,
+    id: 'SSC_CGL_PRE', name: 'SSC CGL/CHSL Tier-I (Prelims)', category: 'SSC', totalQuestions: 100, maxMarks: 200,
     subjects: [
-      { name: 'General Intelligence & Reasoning', part: 'A', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
+      { name: 'General Intelligence and Reasoning', part: 'A', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
       { name: 'General Awareness', part: 'B', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
       { name: 'Quantitative Aptitude', part: 'C', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
       { name: 'English Comprehension', part: 'D', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
@@ -50,8 +50,8 @@ export const EXAM_CONFIGS: ExamConfig[] = [
       { name: 'Mathematical Abilities', part: 'A', totalQuestions: 30, maxMarks: 90, correctMarks: 3, negativeMarks: 1 },
       { name: 'Reasoning & General Intelligence', part: 'B', totalQuestions: 30, maxMarks: 90, correctMarks: 3, negativeMarks: 1 },
       { name: 'English Language & Comprehension', part: 'C', totalQuestions: 45, maxMarks: 135, correctMarks: 3, negativeMarks: 1 },
-      { name: 'General Awareness', part: 'D', totalQuestions: 25, maxMarks: 75, correctMarks: 3, negativeMarks: 0.5 },
-      { name: 'Computer Knowledge', part: 'E', totalQuestions: 20, maxMarks: 60, correctMarks: 3, negativeMarks: 0.5, isQualifying: true },
+      { name: 'General Awareness', part: 'D', totalQuestions: 25, maxMarks: 75, correctMarks: 3, negativeMarks: 1 },
+      { name: 'Computer Knowledge', part: 'E', totalQuestions: 20, maxMarks: 60, correctMarks: 3, negativeMarks: 1, isQualifying: true },
     ],
   },
   {
@@ -73,12 +73,12 @@ export const EXAM_CONFIGS: ExamConfig[] = [
     ],
   },
   {
-    id: 'SSC_CPO_PRE', name: 'SSC CPO Paper-I', category: 'SSC', totalQuestions: 200, maxMarks: 200,
+    id: 'SSC_CPO_PRE', name: 'SSC CPO (Police Sub-Inspector)', category: 'SSC', totalQuestions: 200, maxMarks: 200,
     subjects: [
-      { name: 'General Intelligence & Reasoning', part: 'A', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'General Knowledge & Awareness', part: 'B', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Quantitative Aptitude', part: 'C', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'English Comprehension', part: 'D', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Intelligence and Reasoning', part: '1', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Knowledge and General Awareness', part: '2', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Quantitative Aptitude', part: '3', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'English Comprehension', part: '4', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
     ],
   },
   {
@@ -88,38 +88,55 @@ export const EXAM_CONFIGS: ExamConfig[] = [
     ],
   },
   {
-    id: 'SSC_MTS', name: 'SSC MTS', category: 'SSC', totalQuestions: 90, maxMarks: 90,
+    id: 'SSC_MTS', name: 'SSC MTS & Havaldar (Session 1 + 2)', category: 'SSC', totalQuestions: 90, maxMarks: 270,
     subjects: [
-      { name: 'Numerical & Mathematical Ability', part: 'A', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Reasoning Ability & Problem Solving', part: 'B', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'General Awareness', part: 'C', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'English Language & Comprehension', part: 'D', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Numerical and Mathematical Ability (Session 1)', part: 'A', totalQuestions: 20, maxMarks: 60, correctMarks: 3, negativeMarks: 0, isQualifying: true },
+      { name: 'Reasoning Ability and Problem Solving (Session 1)', part: 'B', totalQuestions: 20, maxMarks: 60, correctMarks: 3, negativeMarks: 0, isQualifying: true },
+      { name: 'General Awareness (Session 2)', part: 'C', totalQuestions: 25, maxMarks: 75, correctMarks: 3, negativeMarks: 1 },
+      { name: 'English Language and Comprehension (Session 2)', part: 'D', totalQuestions: 25, maxMarks: 75, correctMarks: 3, negativeMarks: 1 },
     ],
   },
   {
     id: 'SSC_GD_CONSTABLE', name: 'SSC GD Constable', category: 'SSC', totalQuestions: 80, maxMarks: 160,
     subjects: [
-      { name: 'General Intelligence & Reasoning', part: 'A', totalQuestions: 20, maxMarks: 40, correctMarks: 2, negativeMarks: 0.5 },
-      { name: 'General Knowledge & Awareness', part: 'B', totalQuestions: 20, maxMarks: 40, correctMarks: 2, negativeMarks: 0.5 },
+      { name: 'General Intelligence and Reasoning', part: 'A', totalQuestions: 20, maxMarks: 40, correctMarks: 2, negativeMarks: 0.5 },
+      { name: 'General Knowledge and General Awareness', part: 'B', totalQuestions: 20, maxMarks: 40, correctMarks: 2, negativeMarks: 0.5 },
       { name: 'Elementary Mathematics', part: 'C', totalQuestions: 20, maxMarks: 40, correctMarks: 2, negativeMarks: 0.5 },
       { name: 'English/Hindi', part: 'D', totalQuestions: 20, maxMarks: 40, correctMarks: 2, negativeMarks: 0.5 },
     ],
   },
   {
-    id: 'SSC_STENO', name: 'SSC Stenographer', category: 'SSC', totalQuestions: 200, maxMarks: 200,
+    id: 'SSC_SELECTION_POST', name: 'SSC Selection Post (Phase 13)', category: 'SSC', totalQuestions: 100, maxMarks: 200,
     subjects: [
-      { name: 'General Intelligence & Reasoning', part: 'A', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'General Awareness', part: 'B', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'English Language & Comprehension', part: 'C', totalQuestions: 100, maxMarks: 100, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Intelligence', part: 'A', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
+      { name: 'General Awareness', part: 'B', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
+      { name: 'Quantitative Aptitude (Basic Arithmetic)', part: 'C', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
+      { name: 'English Language (Basic Knowledge)', part: 'D', totalQuestions: 25, maxMarks: 50, correctMarks: 2, negativeMarks: 0.5 },
     ],
   },
-  // Railway Exams
   {
-    id: 'RRB_NTPC_CBT1', name: 'RRB NTPC CBT-1', category: 'RAILWAY', totalQuestions: 100, maxMarks: 100,
+    id: 'SSC_STENO', name: 'SSC Stenographer (Grade C & D)', category: 'SSC', totalQuestions: 200, maxMarks: 200,
     subjects: [
-      { name: 'Mathematics', part: 'A', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.333 },
-      { name: 'General Intelligence & Reasoning', part: 'B', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.333 },
-      { name: 'General Awareness', part: 'C', totalQuestions: 40, maxMarks: 40, correctMarks: 1, negativeMarks: 0.333 },
+      { name: 'General Intelligence & Reasoning', part: 'I', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Awareness', part: 'II', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'English Language and Comprehension', part: 'III', totalQuestions: 100, maxMarks: 100, correctMarks: 1, negativeMarks: 0.25 },
+    ],
+  },
+  {
+    id: 'SSC_JE_PAPER1', name: 'SSC Junior Engineer (JE - Paper 1)', category: 'SSC', totalQuestions: 200, maxMarks: 200,
+    subjects: [
+      { name: 'General Intelligence and Reasoning', part: 'I', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Awareness', part: 'II', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Civil/Electrical/Mechanical Engineering', part: 'III', totalQuestions: 100, maxMarks: 100, correctMarks: 1, negativeMarks: 0.25 },
+    ],
+  },
+  // Railways (RRB)
+  {
+    id: 'RRB_NTPC_CBT1', name: 'RRB NTPC (CBT 1)', category: 'RAILWAY', totalQuestions: 100, maxMarks: 100,
+    subjects: [
+      { name: 'General Awareness', part: '1', totalQuestions: 40, maxMarks: 40, correctMarks: 1, negativeMarks: 0.33 },
+      { name: 'Mathematics', part: '2', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.33 },
+      { name: 'General Intelligence and Reasoning', part: '3', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.33 },
     ],
   },
   {
@@ -133,10 +150,10 @@ export const EXAM_CONFIGS: ExamConfig[] = [
   {
     id: 'RRB_GROUP_D', name: 'RRB Group D', category: 'RAILWAY', totalQuestions: 100, maxMarks: 100,
     subjects: [
-      { name: 'Mathematics', part: 'A', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.333 },
-      { name: 'General Intelligence & Reasoning', part: 'B', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.333 },
-      { name: 'General Science', part: 'C', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.333 },
-      { name: 'General Awareness & Current Affairs', part: 'D', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.333 },
+      { name: 'General Science', part: 'A', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.33 },
+      { name: 'Mathematics', part: 'B', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.33 },
+      { name: 'General Intelligence and Reasoning', part: 'C', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.33 },
+      { name: 'General Awareness and Current Affairs', part: 'D', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.33 },
     ],
   },
   {
@@ -149,40 +166,66 @@ export const EXAM_CONFIGS: ExamConfig[] = [
     ],
   },
   {
-    id: 'RRB_ALP_CBT1', name: 'RRB ALP CBT-1', category: 'RAILWAY', totalQuestions: 75, maxMarks: 75,
+    id: 'RRB_ALP_CBT1', name: 'RRB ALP & Technician (Stage 1)', category: 'RAILWAY', totalQuestions: 75, maxMarks: 75,
     subjects: [
-      { name: 'Mathematics', part: 'A', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.333 },
-      { name: 'General Intelligence & Reasoning', part: 'B', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.333 },
-      { name: 'General Science', part: 'C', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.333 },
-      { name: 'General Awareness', part: 'D', totalQuestions: 10, maxMarks: 10, correctMarks: 1, negativeMarks: 0.333 },
+      { name: 'Mathematics', part: '1', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.33 },
+      { name: 'General Intelligence and Reasoning', part: '2', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.33 },
+      { name: 'General Science', part: '3', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.33 },
+      { name: 'General Awareness (Current Affairs)', part: '4', totalQuestions: 10, maxMarks: 10, correctMarks: 1, negativeMarks: 0.33 },
     ],
   },
-  // IB Exams
+  // Intelligence Bureau (IB) - Official Notification Sequence
   {
-    id: 'IB_ACIO', name: 'IB ACIO Tier-I', category: 'IB', totalQuestions: 100, maxMarks: 100,
+    id: 'IB_ACIO', name: 'IB ACIO Grade-II/Executive (Tier-1)', category: 'IB', totalQuestions: 100, maxMarks: 100,
     subjects: [
-      { name: 'General Awareness', part: 'A', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Quantitative Aptitude', part: 'B', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Logical/Analytical Ability', part: 'C', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'English Language', part: 'D', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Current Affairs', part: '1', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Studies', part: '2', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Quantitative Aptitude (Mathematics)', part: '3', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Numerical Analytical/Logical Ability & Reasoning', part: '4', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'English Language', part: '5', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
     ],
   },
   {
-    id: 'IB_SA', name: 'IB Security Assistant', category: 'IB', totalQuestions: 100, maxMarks: 100,
+    id: 'IB_SA', name: 'IB Security Assistant (SA) & MTS', category: 'IB', totalQuestions: 100, maxMarks: 100,
     subjects: [
-      { name: 'General Awareness', part: 'A', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Quantitative Aptitude', part: 'B', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Logical/Analytical Ability', part: 'C', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'English Language', part: 'D', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Awareness', part: '1', totalQuestions: 40, maxMarks: 40, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Quantitative Aptitude', part: '2', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Numerical/Analytical/Logical Ability & Reasoning', part: '3', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'English Language', part: '4', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.25 },
     ],
   },
-  // Bank Exams
+  // Banking & Insurance - Official Sequence
   {
-    id: 'IBPS_PO_PRE', name: 'IBPS PO Prelims', category: 'BANK', totalQuestions: 100, maxMarks: 100,
+    id: 'IBPS_CLERK_PRE', name: 'IBPS / SBI Clerk (Prelims)', category: 'BANK', totalQuestions: 100, maxMarks: 100,
     subjects: [
-      { name: 'English Language', part: 'A', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Quantitative Aptitude', part: 'B', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Reasoning Ability', part: 'C', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'English Language', part: '1', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Numerical Ability', part: '2', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Reasoning Ability', part: '3', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
+    ],
+  },
+  {
+    id: 'IBPS_PO_PRE', name: 'IBPS / SBI PO (Prelims)', category: 'BANK', totalQuestions: 100, maxMarks: 100,
+    subjects: [
+      { name: 'English Language', part: '1', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Quantitative Aptitude', part: '2', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Reasoning Ability', part: '3', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
+    ],
+  },
+  {
+    id: 'RBI_GRADE_B_PHASE1', name: 'RBI Grade B (Phase 1)', category: 'BANK', totalQuestions: 200, maxMarks: 200,
+    subjects: [
+      { name: 'General Awareness', part: '1', totalQuestions: 80, maxMarks: 80, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'English Language', part: '2', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Quantitative Aptitude', part: '3', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Reasoning Ability', part: '4', totalQuestions: 60, maxMarks: 60, correctMarks: 1, negativeMarks: 0.25 },
+    ],
+  },
+  {
+    id: 'LIC_AAO_PRE', name: 'LIC AAO (Prelims)', category: 'BANK', totalQuestions: 100, maxMarks: 70,
+    subjects: [
+      { name: 'Reasoning Ability', part: '1', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Quantitative Aptitude', part: '2', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'English Language*', part: '3', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
     ],
   },
   {
@@ -194,56 +237,34 @@ export const EXAM_CONFIGS: ExamConfig[] = [
       { name: 'General/Economy/Banking Awareness', part: 'D', totalQuestions: 40, maxMarks: 40, correctMarks: 1, negativeMarks: 0.25 },
     ],
   },
+  // Delhi Police Exams (via SSC)
   {
-    id: 'IBPS_CLERK_PRE', name: 'IBPS Clerk Prelims', category: 'BANK', totalQuestions: 100, maxMarks: 100,
+    id: 'DELHI_POLICE_CONSTABLE', name: 'Delhi Police Constable (Executive)', category: 'POLICE', totalQuestions: 100, maxMarks: 100,
     subjects: [
-      { name: 'English Language', part: 'A', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Numerical Ability', part: 'B', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Reasoning Ability', part: 'C', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'GK / Current Affairs', part: '1', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Reasoning Ability', part: '2', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Numerical Ability', part: '3', totalQuestions: 15, maxMarks: 15, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'Computer Fundamentals', part: '4', totalQuestions: 10, maxMarks: 10, correctMarks: 1, negativeMarks: 0.25 },
     ],
   },
   {
-    id: 'IBPS_CLERK_MAINS', name: 'IBPS Clerk Mains', category: 'BANK', totalQuestions: 190, maxMarks: 200,
+    id: 'DELHI_POLICE_HEAD_CONSTABLE', name: 'Delhi Police Head Constable (Ministerial)', category: 'POLICE', totalQuestions: 100, maxMarks: 100,
     subjects: [
-      { name: 'General/Financial Awareness', part: 'A', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'General English', part: 'B', totalQuestions: 40, maxMarks: 40, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Reasoning Ability & Computer Aptitude', part: 'C', totalQuestions: 50, maxMarks: 60, correctMarks: 1.2, negativeMarks: 0.25 },
-      { name: 'Quantitative Aptitude', part: 'D', totalQuestions: 50, maxMarks: 50, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Awareness', part: '1', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.5 },
+      { name: 'Quantitative Aptitude', part: '2', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0.5 },
+      { name: 'General Intelligence', part: '3', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.5 },
+      { name: 'English Language', part: '4', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.5 },
+      { name: 'Computer Fundamentals', part: '5', totalQuestions: 10, maxMarks: 10, correctMarks: 1, negativeMarks: 0.5 },
     ],
   },
   {
-    id: 'SBI_PO_PRE', name: 'SBI PO Prelims', category: 'BANK', totalQuestions: 100, maxMarks: 100,
+    id: 'DELHI_POLICE_HC_AWO_TPO', name: 'Delhi Police HC (AWO/TPO)', category: 'POLICE', totalQuestions: 100, maxMarks: 100,
     subjects: [
-      { name: 'English Language', part: 'A', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Quantitative Aptitude', part: 'B', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Reasoning Ability', part: 'C', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
-    ],
-  },
-  {
-    id: 'SBI_CLERK_PRE', name: 'SBI Clerk Prelims', category: 'BANK', totalQuestions: 100, maxMarks: 100,
-    subjects: [
-      { name: 'English Language', part: 'A', totalQuestions: 30, maxMarks: 30, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Numerical Ability', part: 'B', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Reasoning Ability', part: 'C', totalQuestions: 35, maxMarks: 35, correctMarks: 1, negativeMarks: 0.25 },
-    ],
-  },
-  // Police Exams
-  {
-    id: 'DELHI_POLICE_CONSTABLE', name: 'Delhi Police Constable', category: 'POLICE', totalQuestions: 100, maxMarks: 100,
-    subjects: [
-      { name: 'General Knowledge/Current Affairs', part: 'A', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Reasoning', part: 'B', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Numerical Ability', part: 'C', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Computer Awareness', part: 'D', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-    ],
-  },
-  {
-    id: 'DELHI_POLICE_HEAD_CONSTABLE', name: 'Delhi Police Head Constable', category: 'POLICE', totalQuestions: 100, maxMarks: 100,
-    subjects: [
-      { name: 'General Knowledge/Current Affairs', part: 'A', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Reasoning/Quantitative Aptitude', part: 'B', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'English Language', part: 'C', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
-      { name: 'Computer Fundamentals', part: 'D', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0.25 },
+      { name: 'General Awareness', part: '1', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0 },
+      { name: 'General Science', part: '2', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0 },
+      { name: 'Mathematics', part: '3', totalQuestions: 25, maxMarks: 25, correctMarks: 1, negativeMarks: 0 },
+      { name: 'Reasoning', part: '4', totalQuestions: 20, maxMarks: 20, correctMarks: 1, negativeMarks: 0 },
+      { name: 'Computer Fundamentals', part: '5', totalQuestions: 10, maxMarks: 10, correctMarks: 1, negativeMarks: 0 },
     ],
   },
 ];

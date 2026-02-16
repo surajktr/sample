@@ -1,11 +1,14 @@
 import type { ScorecardData } from '@/lib/parseSSCHtml';
-import { BarChart3, User, MapPin, Calendar, Clock, BookOpen } from 'lucide-react';
+import { BarChart3, User, MapPin, Calendar, Clock, BookOpen, ChevronDown, ChevronUp, Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 
 interface ScorecardProps {
   data: ScorecardData;
 }
 
 const Scorecard = ({ data }: ScorecardProps) => {
+  const [showBreakdown, setShowBreakdown] = useState(true);
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Candidate Info */}
@@ -74,130 +77,167 @@ const Scorecard = ({ data }: ScorecardProps) => {
         </div>
       )}
 
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <BarChart3 className="w-6 h-6 text-primary" />
-        <h2 className="text-2xl font-bold text-foreground">Section-wise Breakdown</h2>
+      {/* Header with Toggle */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <BarChart3 className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-bold text-foreground">Subject-wise Breakdown</h2>
+        </div>
+        <button
+          onClick={() => setShowBreakdown(!showBreakdown)}
+          className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors font-medium text-sm"
+        >
+          {showBreakdown ? (
+            <>
+              <EyeOff className="w-4 h-4" />
+              Hide Details
+            </>
+          ) : (
+            <>
+              <Eye className="w-4 h-4" />
+              Show Details
+            </>
+          )}
+          {showBreakdown ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </button>
       </div>
 
       {/* Table */}
-      <div className="bg-card rounded-xl border border-border overflow-hidden shadow-sm">
-        {/* Table Header */}
-        <div className="grid grid-cols-7 gap-2 px-6 py-4 bg-muted/50 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          <div>Part</div>
-          <div className="col-span-2">Subject</div>
-          <div className="text-center">Correct</div>
-          <div className="text-center">Wrong</div>
-          <div className="text-center">Skipped</div>
-          <div className="text-right">Score</div>
-        </div>
+      {showBreakdown && (
+        <div className="bg-card rounded-xl border border-border overflow-hidden shadow-sm">
+          {/* Table Header */}
+          <div className="grid grid-cols-8 gap-2 px-6 py-4 bg-muted/50 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <div>Part</div>
+            <div className="col-span-2">Subject</div>
+            <div className="text-center">Correct</div>
+            <div className="text-center">Wrong</div>
+            <div className="text-center">Skipped</div>
+            <div className="text-center">Bonus</div>
+            <div className="text-right">Score</div>
+          </div>
 
         {/* Section Rows */}
-        {data.sections.map((section) => (
-          <div
-            key={section.part}
-            className="grid grid-cols-7 gap-2 px-6 py-5 border-t border-border items-center hover:bg-muted/30 transition-colors"
-          >
-            <div>
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-sm">
-                {section.part}
-              </span>
+          {data.sections.map((section) => (
+            <div
+              key={section.part}
+              className="grid grid-cols-8 gap-2 px-6 py-5 border-t border-border items-center hover:bg-muted/30 transition-colors"
+            >
+              <div>
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                  {section.part}
+                </span>
+              </div>
+              <div className="col-span-2">
+                <p className="font-medium text-foreground">{section.subject}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  +{section.marksPerCorrect} / -{section.negativePerWrong}
+                </p>
+              </div>
+              <div className="text-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-lg dark:bg-emerald-950/30 dark:text-emerald-400">
+                  {section.correct}
+                </span>
+              </div>
+              <div className="text-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-50 text-red-500 font-bold text-lg dark:bg-red-950/30 dark:text-red-400">
+                  {section.wrong}
+                </span>
+              </div>
+              <div className="text-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-muted text-muted-foreground font-bold text-lg">
+                  {section.skipped}
+                </span>
+              </div>
+              <div className="text-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-amber-50 text-amber-600 font-bold text-lg dark:bg-amber-950/30 dark:text-amber-400">
+                  {section.bonus}
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl font-bold text-foreground">{section.score.toFixed(1)}</span>
+                <span className="text-sm text-muted-foreground"> /{section.maxMarks}</span>
+              </div>
             </div>
-            <div className="col-span-2">
-              <p className="font-medium text-foreground">{section.subject}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                +{section.marksPerCorrect} / -{section.negativePerWrong}
-              </p>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-lg dark:bg-emerald-950/30 dark:text-emerald-400">
-                {section.correct}
-              </span>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-50 text-red-500 font-bold text-lg dark:bg-red-950/30 dark:text-red-400">
-                {section.wrong}
-              </span>
-            </div>
-            <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-muted text-muted-foreground font-bold text-lg">
-                {section.skipped}
-              </span>
-            </div>
-            <div className="text-right">
-              <span className="text-2xl font-bold text-foreground">{section.score.toFixed(1)}</span>
-              <span className="text-sm text-muted-foreground"> /{section.maxMarks}</span>
-            </div>
-          </div>
-        ))}
+          ))}
 
         {/* Total Row */}
-        <div className="grid grid-cols-7 gap-2 px-6 py-5 border-t-2 border-primary/20 bg-primary/5 items-center">
-          <div className="col-span-3">
-            <p className="text-xl font-bold text-foreground">Total</p>
-          </div>
-          <div className="text-center">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-lg dark:bg-emerald-950/50 dark:text-emerald-400">
-              {data.totalCorrect}
-            </span>
-          </div>
-          <div className="text-center">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-100 text-red-600 font-bold text-lg dark:bg-red-950/50 dark:text-red-400">
-              {data.totalWrong}
-            </span>
-          </div>
-          <div className="text-center">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-muted text-muted-foreground font-bold text-lg">
-              {data.totalSkipped}
-            </span>
-          </div>
-          <div className="text-right">
-            <span className="text-2xl font-bold text-foreground">{data.totalScore.toFixed(1)}</span>
-            <span className="text-sm text-muted-foreground"> /{data.totalMaxMarks}</span>
-          </div>
-        </div>
-
-        {/* Qualifying Section */}
-        {data.qualifyingSection && (
-          <div className="grid grid-cols-7 gap-2 px-6 py-5 border-t border-border items-center bg-muted/20">
-            <div>
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-sm">
-                {data.qualifyingSection.part}
-              </span>
-            </div>
-            <div className="col-span-2">
-              <p className="font-medium text-foreground">
-                {data.qualifyingSection.subject}
-                <span className="ml-2 text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">
-                  Qualifying
-                </span>
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                +{data.qualifyingSection.marksPerCorrect} / -{data.qualifyingSection.negativePerWrong}
-              </p>
+          <div className="grid grid-cols-8 gap-2 px-6 py-5 border-t-2 border-primary/20 bg-primary/5 items-center">
+            <div className="col-span-3">
+              <p className="text-xl font-bold text-foreground">Total</p>
             </div>
             <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-lg dark:bg-emerald-950/30 dark:text-emerald-400">
-                {data.qualifyingSection.correct}
+              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-lg dark:bg-emerald-950/50 dark:text-emerald-400">
+                {data.totalCorrect}
               </span>
             </div>
             <div className="text-center">
-              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-50 text-red-500 font-bold text-lg dark:bg-red-950/30 dark:text-red-400">
-                {data.qualifyingSection.wrong}
+              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-100 text-red-600 font-bold text-lg dark:bg-red-950/50 dark:text-red-400">
+                {data.totalWrong}
               </span>
             </div>
             <div className="text-center">
               <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-muted text-muted-foreground font-bold text-lg">
-                {data.qualifyingSection.skipped}
+                {data.totalSkipped}
+              </span>
+            </div>
+            <div className="text-center">
+              <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-amber-100 text-amber-700 font-bold text-lg dark:bg-amber-950/50 dark:text-amber-400">
+                {data.sections.reduce((sum, s) => sum + s.bonus, 0)}
               </span>
             </div>
             <div className="text-right">
-              <span className="text-2xl font-bold text-foreground">{data.qualifyingSection.score.toFixed(1)}</span>
-              <span className="text-sm text-muted-foreground"> /{data.qualifyingSection.maxMarks}</span>
+              <span className="text-2xl font-bold text-foreground">{data.totalScore.toFixed(1)}</span>
+              <span className="text-sm text-muted-foreground"> /{data.totalMaxMarks}</span>
             </div>
           </div>
-        )}
-      </div>
+
+        {/* Qualifying Section */}
+          {data.qualifyingSection && (
+            <div className="grid grid-cols-8 gap-2 px-6 py-5 border-t border-border items-center bg-muted/20">
+              <div>
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                  {data.qualifyingSection.part}
+                </span>
+              </div>
+              <div className="col-span-2">
+                <p className="font-medium text-foreground">
+                  {data.qualifyingSection.subject}
+                  <span className="ml-2 text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">
+                    Qualifying
+                  </span>
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  +{data.qualifyingSection.marksPerCorrect} / -{data.qualifyingSection.negativePerWrong}
+                </p>
+              </div>
+              <div className="text-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-lg dark:bg-emerald-950/30 dark:text-emerald-400">
+                  {data.qualifyingSection.correct}
+                </span>
+              </div>
+              <div className="text-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-50 text-red-500 font-bold text-lg dark:bg-red-950/30 dark:text-red-400">
+                  {data.qualifyingSection.wrong}
+                </span>
+              </div>
+              <div className="text-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-muted text-muted-foreground font-bold text-lg">
+                  {data.qualifyingSection.skipped}
+                </span>
+              </div>
+              <div className="text-center">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-amber-50 text-amber-600 font-bold text-lg dark:bg-amber-950/30 dark:text-amber-400">
+                  {data.qualifyingSection.bonus}
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl font-bold text-foreground">{data.qualifyingSection.score.toFixed(1)}</span>
+                <span className="text-sm text-muted-foreground"> /{data.qualifyingSection.maxMarks}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

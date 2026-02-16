@@ -1,0 +1,111 @@
+version: "2"
+type: frontend
+tech_stack:
+  - TypeScript
+  - React
+  - Vite
+  - TailwindCSS
+  - shadcn/ui
+  - Supabase
+routes:
+  - path: /
+    file: src/pages/Index.tsx
+    auth_required: false
+    description: Main page for analyzing exam response sheets
+  - path: /*
+    file: src/pages/NotFound.tsx
+    auth_required: false
+    description: 404 Not Found page
+features:
+  - name: Analyze Response Sheet
+    description: Users can paste a response sheet URL, select exam type and language, then analyze the scorecard
+    files:
+      - src/pages/Index.tsx
+      - src/components/HeroInput.tsx
+      - src/lib/parseSSCHtml.ts
+      - src/lib/examConfig.ts
+      - supabase/functions/analyze-response-sheet/index.ts
+    entry_route: /
+    user_interactions:
+      - Select exam category from dropdown (SSC, Railway, IB, Bank, Police)
+      - Select specific exam type from dropdown
+      - Select language (Hindi or English)
+      - Paste response sheet URL in input field
+      - Click Analyze button to submit
+      - View loading screen during analysis
+      - View results with candidate info, scores, and question details
+    api_calls:
+      - method: POST
+        endpoint: /functions/v1/analyze-response-sheet
+    auth_required: false
+  - name: View Scorecard Results
+    description: Display detailed scorecard with candidate info, section breakdown, and question-wise analysis
+    files:
+      - src/pages/Index.tsx
+      - src/components/ResultsHeader.tsx
+      - src/components/CandidateInfoCard.tsx
+      - src/components/TotalScoreCard.tsx
+      - src/components/SectionBreakdown.tsx
+      - src/components/QuestionAnalysis.tsx
+      - src/components/QuestionDetail.tsx
+    entry_route: /
+    user_interactions:
+      - View candidate information card
+      - View total score summary
+      - View section-wise breakdown table
+      - Browse questions by section tabs
+      - Filter questions by status (correct, wrong, unattempted, bonus)
+      - Toggle between Hindi and English language for questions
+      - Click back button to return to input form
+    api_calls: []
+    auth_required: false
+  - name: Multi-Exam Support
+    description: Support for 25+ exam types across SSC, Railway, IB, Bank, and Police categories
+    files:
+      - src/lib/examConfig.ts
+    entry_route: /
+    user_interactions:
+      - Select from SSC exams (CGL Tier-I/II, CHSL, CPO, MTS, GD Constable, Steno)
+      - Select from Railway exams (RRB NTPC, Group D, JE, ALP)
+      - Select from IB exams (ACIO, Security Assistant)
+      - Select from Bank exams (IBPS PO/Clerk, SBI PO/Clerk)
+      - Select from Police exams (Delhi Police Constable/Head Constable)
+    api_calls: []
+    auth_required: false
+  - name: Bilingual Question Display
+    description: Display questions and options in Hindi or English with language toggle
+    files:
+      - src/components/QuestionAnalysis.tsx
+      - src/components/QuestionDetail.tsx
+      - src/lib/parseSSCHtml.ts
+    entry_route: /
+    user_interactions:
+      - Toggle language button to switch between Hindi and English
+      - View question images in selected language
+      - View option images in selected language
+    api_calls: []
+    auth_required: false
+  - name: HTML Parsing
+    description: Parse two different HTML formats - ViewCandResponse and AssessmentQPHTMLMode1
+    files:
+      - src/lib/parseSSCHtml.ts
+      - supabase/functions/analyze-response-sheet/index.ts
+    entry_route: /
+    user_interactions:
+      - System automatically detects HTML format
+      - System extracts questions, options, and answers
+      - System calculates scores based on exam pattern
+    api_calls:
+      - method: POST
+        endpoint: /functions/v1/analyze-response-sheet
+    auth_required: false
+known_limitations:
+  - issue: CORS proxy fallback chain may fail for some URLs
+    location: supabase/functions/analyze-response-sheet/index.ts
+    impact: URL fetching may fail if all proxies are unavailable
+  - issue: Exam config must be manually selected, not auto-detected from URL
+    location: src/components/HeroInput.tsx
+    impact: Users must know their exam type to select correctly
+  - issue: Text extraction with line breaks is newly implemented and may need testing
+    location: src/lib/parseSSCHtml.ts
+    impact: Option text formatting may not be perfect for all HTML structures

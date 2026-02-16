@@ -1,0 +1,17 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:8080",
+  "executionArgs": {
+    "projectName": "scorecard-savvy",
+    "projectPath": "c:\\Users\\Suraj\\cvcvcvcv\\scorecard-savvy",
+    "testIds": [],
+    "additionalInstruction": "Test the exam response sheet analysis functionality with focus on: 1) URL input and exam selection, 2) Parsing different HTML formats (Railway, IB, SSC URLs), 3) Text extraction with line breaks in options, 4) Score calculation with correct negative marking (-1 for GS in mains exams)",
+    "envs": {
+      "API_KEY": "sk-user-jDa6qDktdrO1jiY1fl02-qC7lWCJTqdKT_ZRQUPcjzPTnQQ21qr2QFwLHP90k-7uZXN_e6d_eK38ZHATQ3wkeQxhqeZrTpDaU_HqlOXvB8fodwVHUmL_fme90TCTCQDuTNI"
+    }
+  },
+  "serverPort": 53758,
+  "proxy": "http://6935d7dc-18ef-4e23-a0a8-8907dc71bf93:SGJSVxq97lKMW7g95tHkBdmSCyI5n9Tf@tun.testsprite.com:8080"
+}

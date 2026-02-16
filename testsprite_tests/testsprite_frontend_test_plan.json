@@ -1,0 +1,3005 @@
+[
+  {
+    "id": "TC001",
+    "title": "Analyze a valid response sheet URL and view full results (English)",
+    "description": "Verifies that a user can select exam category/type and language, submit a valid response sheet URL, see a loading state, and land on a results view with key scorecard sections visible.",
+    "category": "Analyze Response Sheet",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select exam category from dropdown (SSC, Railway, IB, Bank, Police)"
+      },
+      {
+        "type": "action",
+        "description": "Select specific exam type from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select language (Hindi or English)"
+      },
+      {
+        "type": "action",
+        "description": "Paste response sheet URL in input field"
+      },
+      {
+        "type": "action",
+        "description": "Click Analyze button to submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Loading\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Candidate\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Analyze a valid response sheet URL and view bilingual/translated content (Hindi)",
+    "description": "Verifies that selecting Hindi language and analyzing shows a results view with Hindi-visible content for the scorecard.",
+    "category": "Analyze Response Sheet",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select exam category from dropdown (SSC, Railway, IB, Bank, Police)"
+      },
+      {
+        "type": "action",
+        "description": "Select specific exam type from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select language (Hindi or English)"
+      },
+      {
+        "type": "action",
+        "description": "Paste response sheet URL in input field"
+      },
+      {
+        "type": "action",
+        "description": "Click Analyze button to submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Loading\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"अभ्यर्थी\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Validation: Attempt analyze without providing a URL",
+    "description": "Verifies that clicking Analyze with an empty URL input does not proceed and shows a visible validation/error message.",
+    "category": "Analyze Response Sheet",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select exam category from dropdown (SSC, Railway, IB, Bank, Police)"
+      },
+      {
+        "type": "action",
+        "description": "Select specific exam type from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select language (Hindi or English)"
+      },
+      {
+        "type": "action",
+        "description": "Click Analyze button to submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"URL\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Validation: Attempt analyze without selecting exam category/type",
+    "description": "Verifies that analysis cannot start when exam selections are missing and a visible prompt/error is shown.",
+    "category": "Analyze Response Sheet",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Paste response sheet URL in input field"
+      },
+      {
+        "type": "action",
+        "description": "Click Analyze button to submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"exam\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"select\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Error handling: Malformed URL shows parse/network error with retry option",
+    "description": "Verifies that submitting a malformed URL leads to an error state and a visible retry option is shown.",
+    "category": "Analyze Response Sheet",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select exam category from dropdown (SSC, Railway, IB, Bank, Police)"
+      },
+      {
+        "type": "action",
+        "description": "Select specific exam type from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Paste \"not-a-url\" into response sheet URL in input field"
+      },
+      {
+        "type": "action",
+        "description": "Click Analyze button to submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"error\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Retry\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Error handling: Inaccessible URL shows network/CORS error with retry option",
+    "description": "Verifies that submitting an unreachable URL results in a visible network/CORS error message and a retry option.",
+    "category": "Analyze Response Sheet",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select exam category from dropdown (SSC, Railway, IB, Bank, Police)"
+      },
+      {
+        "type": "action",
+        "description": "Select specific exam type from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Paste \"https://example.invalid/response.html\" into response sheet URL in input field"
+      },
+      {
+        "type": "action",
+        "description": "Click Analyze button to submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"CORS\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Retry\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Retry flow: After an error, retry succeeds and results render",
+    "description": "Verifies that using the retry option after an analysis error re-attempts analysis and can reach a results view.",
+    "category": "Analyze Response Sheet",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select exam category from dropdown (SSC, Railway, IB, Bank, Police)"
+      },
+      {
+        "type": "action",
+        "description": "Select specific exam type from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Paste \"not-a-url\" into response sheet URL in input field"
+      },
+      {
+        "type": "action",
+        "description": "Click Analyze button to submit"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Retry\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Loading\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Change selections: Switching exam category updates available exam types before analyze",
+    "description": "Verifies that changing the exam category affects the specific exam type selection and the form remains usable for analysis.",
+    "category": "Analyze Response Sheet",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select exam category from dropdown (SSC, Railway, IB, Bank, Police)"
+      },
+      {
+        "type": "action",
+        "description": "Select specific exam type from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select exam category from dropdown (SSC, Railway, IB, Bank, Police)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Select specific exam type\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select specific exam type from dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Analyze\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "View candidate information card after successful analysis",
+    "description": "Verifies the candidate information card is visible on the results view after analysis completes.",
+    "category": "View Scorecard Results",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Candidate\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Candidate information card\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "View total score summary card after successful analysis",
+    "description": "Verifies the total score summary is shown on the results view after analysis completes.",
+    "category": "View Scorecard Results",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total Score\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Total score summary card\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "View section-wise breakdown table on results",
+    "description": "Verifies the section-wise breakdown table is visible after analysis completes.",
+    "category": "View Scorecard Results",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Section\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Section-wise breakdown table\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Browse questions by switching section tabs",
+    "description": "Verifies users can browse question analysis by switching between section tabs.",
+    "category": "View Scorecard Results",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on a section tab in the questions area"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Question list\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on a different section tab in the questions area"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Question list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Filter questions to show only Correct status",
+    "description": "Verifies filtering by the Correct status updates the visible question list.",
+    "category": "View Scorecard Results",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the status filter for \"Correct\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Correct\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Filtered question list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Filter questions to show only Wrong status",
+    "description": "Verifies filtering by the Wrong status updates the visible question list.",
+    "category": "View Scorecard Results",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the status filter for \"Wrong\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Wrong\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Filtered question list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Filter questions to show only Unattempted status",
+    "description": "Verifies filtering by the Unattempted status updates the visible question list.",
+    "category": "View Scorecard Results",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the status filter for \"Unattempted\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Unattempted\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Filtered question list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Filter questions to show only Bonus status",
+    "description": "Verifies filtering by the Bonus status updates the visible question list.",
+    "category": "View Scorecard Results",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the status filter for \"Bonus\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Bonus\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Filtered question list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Toggle language between English and Hindi for questions",
+    "description": "Verifies the language toggle changes the displayed question language on the results view.",
+    "category": "View Scorecard Results",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Hindi\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle to switch to English"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"English\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Hindi variant missing: fallback language and unavailable notice shown",
+    "description": "Verifies that when Hindi content is unavailable for some questions, the UI falls back to the available language and shows an unavailable-variant notice.",
+    "category": "View Scorecard Results",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field that is known to contain at least one question with missing Hindi variant"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"not available\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Question text/content\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Return from results to input form using Back button",
+    "description": "Verifies the Back button returns the user from the results view to the input form on the main page.",
+    "category": "View Scorecard Results",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid exam configuration option from the exam type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Back button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"response sheet URL input field\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Analyze button\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Select SSC CGL Tier-I exam type and analyze response sheet URL successfully",
+    "description": "Verifies that selecting a specific exam type (SSC CGL Tier-I) is applied when analyzing a response sheet URL and results are shown.",
+    "category": "Multi-Exam Support",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select \"SSC\" from the exam category dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"SSC CGL Tier-I\" from the supported exam types list"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Scorecard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"SSC CGL Tier-I\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Switch exam type before analyze and confirm the latest selection is used",
+    "description": "Verifies that changing the exam type selection before clicking Analyze uses the most recent exam config selection.",
+    "category": "Multi-Exam Support",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select \"SSC\" from the exam category dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"SSC CHSL\" from the supported exam types list"
+      },
+      {
+        "type": "action",
+        "description": "Select \"SSC CGL Tier-I\" from the supported exam types list"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/AssessmentQPHTMLMode1\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"SSC CGL Tier-I\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Select a Railway exam type (RRB NTPC) and analyze",
+    "description": "Verifies that a Railway exam type can be selected and the app proceeds to compute and display results for that selection.",
+    "category": "Multi-Exam Support",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Railway\" from the exam category dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"RRB NTPC\" from the supported exam types list"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Scorecard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"RRB NTPC\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Select an IB exam type (ACIO) and analyze",
+    "description": "Verifies that an IB exam type can be selected and results are generated with that config applied.",
+    "category": "Multi-Exam Support",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select \"IB\" from the exam category dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"ACIO\" from the supported exam types list"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/AssessmentQPHTMLMode1\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Scorecard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"ACIO\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Select a Bank exam type (IBPS PO) and analyze",
+    "description": "Verifies that a Bank exam type can be selected and the resulting view reflects the selected exam type.",
+    "category": "Multi-Exam Support",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Bank\" from the exam category dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"IBPS PO\" from the supported exam types list"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Scorecard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"IBPS PO\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Select a Police exam type (Delhi Police Constable) and analyze",
+    "description": "Verifies that a Police exam type can be selected and analysis proceeds to a results view reflecting that selection.",
+    "category": "Multi-Exam Support",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Police\" from the exam category dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Delhi Police Constable\" from the supported exam types list"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/AssessmentQPHTMLMode1\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Scorecard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Delhi Police Constable\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Attempt analyze without selecting an exam type shows instruction to manually select",
+    "description": "Verifies that if the user does not select a specific exam type and tries to analyze, the UI presents an instruction to manually choose the exam type.",
+    "category": "Multi-Exam Support",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Select\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"exam\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"manual\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC027",
+    "title": "Select an incorrect exam type and verify parsing warning / incorrect mapping message is shown",
+    "description": "Verifies that using a mismatched exam configuration triggers a visible warning or message instructing the user to manually select the correct exam type.",
+    "category": "Multi-Exam Support",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select \"SSC\" from the exam category dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"SSC Steno\" from the supported exam types list"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"warning\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"select\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"correct exam\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC028",
+    "title": "Switch language from English to Hindi and see question content update",
+    "description": "Verifies the language toggle switches the question display to Hindi after analysis.",
+    "category": "Bilingual Question Display",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam type from the exam configuration dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid response sheet HTML URL into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Question\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"प्रश्न\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC029",
+    "title": "Switch language from Hindi back to English and see question content update",
+    "description": "Verifies the language toggle switches back to English after viewing Hindi.",
+    "category": "Bilingual Question Display",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam type from the exam configuration dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid response sheet HTML URL into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"प्रश्न\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch back to English"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Question\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC030",
+    "title": "In English mode, prefer question image variant when available",
+    "description": "Verifies that when a question image exists for the selected language, it is shown in English mode.",
+    "category": "Bilingual Question Display",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam type from the exam configuration dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid response sheet HTML URL into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on a question in the analysis list to open its detail view"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Question image\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Question\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC031",
+    "title": "In Hindi mode, prefer question image variant when available",
+    "description": "Verifies that when a Hindi question image exists, it is shown after switching to Hindi.",
+    "category": "Bilingual Question Display",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam type from the exam configuration dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid response sheet HTML URL into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on a question in the analysis list to open its detail view"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Question image\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"प्रश्न\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC032",
+    "title": "Switch language and see option images update to selected language",
+    "description": "Verifies option images (or option content) reflect the currently selected language.",
+    "category": "Bilingual Question Display",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam type from the exam configuration dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid response sheet HTML URL into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on a question in the analysis list to open its detail view"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Option A\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"विकल्प\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Option A\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC033",
+    "title": "Hindi variant missing for some images shows fallback content and warning",
+    "description": "Verifies missing Hindi variant triggers a visible unavailable-variant warning and shows fallback image/text instead of breaking the UI.",
+    "category": "Bilingual Question Display",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam type from the exam configuration dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid response sheet HTML URL into the response sheet URL field that is known to include at least one question/option without a Hindi image variant"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on a question in the analysis list to open its detail view"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"unavailable\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Question content\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC034",
+    "title": "Toggling language does not remove candidate analysis context",
+    "description": "Verifies the language toggle changes only the bilingual display and does not reset the analysis results view.",
+    "category": "Bilingual Question Display",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam type from the exam configuration dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid response sheet HTML URL into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC035",
+    "title": "Rapid language toggling remains stable and keeps selected language state",
+    "description": "Verifies quickly toggling languages does not break the question display and ends in the expected language.",
+    "category": "Bilingual Question Display",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam type from the exam configuration dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid response sheet HTML URL into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch to Hindi"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch back to English"
+      },
+      {
+        "type": "action",
+        "description": "Click on the language toggle button to switch to Hindi"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"प्रश्न\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC036",
+    "title": "Analyze a valid ViewCandResponse URL and display parsed scorecard results",
+    "description": "Verifies that a valid ViewCandResponse response-sheet URL can be analyzed and results are shown on the page.",
+    "category": "HTML Parsing (ViewCandResponse & AssessmentQPHTMLMode1)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page title contains \"CGL\""
+      },
+      {
+        "type": "action",
+        "description": "Type a valid ViewCandResponse.aspx response-sheet URL into the URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Questions\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Correct\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Incorrect\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC037",
+    "title": "Analyze a valid AssessmentQPHTMLMode1 URL and display parsed question details",
+    "description": "Verifies that a valid AssessmentQPHTMLMode1 response-sheet URL can be analyzed and question/answer details appear.",
+    "category": "HTML Parsing (ViewCandResponse & AssessmentQPHTMLMode1)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid AssessmentQPHTMLMode1 response-sheet URL into the URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Question\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Option\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Selected\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Correct\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Results\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC038",
+    "title": "Validation: Attempt analyze with empty URL shows an error message",
+    "description": "Verifies the UI prevents submission without a URL and shows a visible validation message.",
+    "category": "HTML Parsing (ViewCandResponse & AssessmentQPHTMLMode1)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"URL\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Analyze\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC039",
+    "title": "Validation: Invalid/non-HTTP text in URL field shows a visible error",
+    "description": "Verifies that clearly invalid input is rejected or results in a visible parse/fetch error message.",
+    "category": "HTML Parsing (ViewCandResponse & AssessmentQPHTMLMode1)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"not a url\" into the URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"error\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"URL\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Analyze\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC040",
+    "title": "Format detection: Submit ViewCandResponse URL and confirm results load without manual format selection",
+    "description": "Verifies the system auto-detects the HTML format and still produces results after submission.",
+    "category": "HTML Parsing (ViewCandResponse & AssessmentQPHTMLMode1)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid ViewCandResponse.aspx response-sheet URL into the URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Scorecard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Selected\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Correct\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC041",
+    "title": "Results content: Verify a question shows both selected answer and correct answer labels",
+    "description": "Verifies that parsed output distinguishes the candidate’s selected option from the correct option in the UI.",
+    "category": "HTML Parsing (ViewCandResponse & AssessmentQPHTMLMode1)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type a valid AssessmentQPHTMLMode1 response-sheet URL into the URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Selected\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Correct\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Option\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Question\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC042",
+    "title": "Bonus question marking: Verify bonus question indicator appears in results (if present in the sheet)",
+    "description": "Verifies that when the response sheet includes a bonus question, the UI displays a visible bonus indicator.",
+    "category": "HTML Parsing (ViewCandResponse & AssessmentQPHTMLMode1)",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type a response-sheet URL known to include at least one bonus question into the URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Bonus\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Question\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Results\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC043",
+    "title": "Download Answer Key in English from analyzed result",
+    "description": "Verifies that an analyzed response sheet can generate an English Answer Key download via the download language dialog.",
+    "category": "Download Features (Response Sheet / Answer Key / Quiz Mode)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet HTML URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click the Analyze or Generate Scorecard button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the Download button for \"Answer Key\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Download Language\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"English\" as the language option"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate Download\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC044",
+    "title": "Download Response Sheet in Hindi from analyzed result",
+    "description": "Verifies that an analyzed response sheet can generate a Hindi Response Sheet download via the download language dialog.",
+    "category": "Download Features (Response Sheet / Answer Key / Quiz Mode)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet HTML URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click the Analyze or Generate Scorecard button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the Download button for \"Response Sheet\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Download Language\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Hindi\" as the language option"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate Download\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC045",
+    "title": "Download Quiz Mode in Bilingual from analyzed result",
+    "description": "Verifies that an analyzed response sheet can generate a Bilingual Quiz Mode HTML download via the download language dialog.",
+    "category": "Download Features (Response Sheet / Answer Key / Quiz Mode)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet HTML URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click the Analyze or Generate Scorecard button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the Download button for \"Quiz Mode\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Download Language\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Bilingual\" as the language option"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate Download\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC046",
+    "title": "Download dialog supports switching language selection before generating",
+    "description": "Verifies the user can change the selected language option in the download dialog before generating the download.",
+    "category": "Download Features (Response Sheet / Answer Key / Quiz Mode)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet HTML URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click the Analyze or Generate Scorecard button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the Download button for \"Answer Key\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Download Language\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Hindi\" as the language option"
+      },
+      {
+        "type": "action",
+        "description": "Select \"English\" as the language option"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate Download\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC047",
+    "title": "Download language dialog can be dismissed without generating",
+    "description": "Verifies the user can close the download language dialog and return to the results view without starting a download.",
+    "category": "Download Features (Response Sheet / Answer Key / Quiz Mode)",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet HTML URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click the Analyze or Generate Scorecard button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Score\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the Download button for \"Response Sheet\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Download Language\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Press Escape"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Download Language\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC048",
+    "title": "Filter questions by Part and Status, then search within filtered results",
+    "description": "Verifies that Part filter + Status filter narrow the list and search further refines the visible questions.",
+    "category": "Filtering & Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze/Generate Scorecard button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Questions\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Part A\" from the Part filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Wrong\" from the Status filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Wrong\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC049",
+    "title": "Search by question number after applying Part and Status filters",
+    "description": "Verifies that searching by a question number works when filters are already applied.",
+    "category": "Filtering & Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze/Generate Scorecard button"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Part A\" from the Part filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Wrong\" from the Status filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"1\" into the question search input field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"1\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC050",
+    "title": "Search by keyword after applying Part and Status filters",
+    "description": "Verifies that searching by a keyword narrows down the filtered question list to matching items.",
+    "category": "Filtering & Search",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze/Generate Scorecard button"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Part A\" from the Part filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Wrong\" from the Status filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"capital\" into the question search input field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"capital\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC051",
+    "title": "Clear search input restores the filtered list (filters remain applied)",
+    "description": "Verifies that removing the search term returns to the Part/Status-filtered list without clearing filters.",
+    "category": "Filtering & Search",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze/Generate Scorecard button"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Part A\" from the Part filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Wrong\" from the Status filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"capital\" into the question search input field"
+      },
+      {
+        "type": "action",
+        "description": "Clear the question search input field"
+      }
+    ]
+  },
+  {
+    "id": "TC052",
+    "title": "Apply filters that yield zero results and verify empty state appears",
+    "description": "Verifies that an empty state is shown when the chosen filters/search yield no questions, with guidance text visible.",
+    "category": "Filtering & Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze/Generate Scorecard button"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Part A\" from the Part filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Bonus\" from the Status filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No questions\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Clear Filters\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC053",
+    "title": "Use Clear Filters from empty state to restore the full question list",
+    "description": "Verifies that Clear Filters resets filters and repopulates the question list after a zero-result state.",
+    "category": "Filtering & Search",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze/Generate Scorecard button"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Part A\" from the Part filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Bonus\" from the Status filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Clear Filters\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Questions\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC054",
+    "title": "Language filter changes the displayed language of question content",
+    "description": "Verifies that selecting a different language updates visible question text language presentation.",
+    "category": "Filtering & Search",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze/Generate Scorecard button"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Hindi\" from the Language filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Hindi\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"English\" from the Language filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"English\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC055",
+    "title": "Status filter toggling between Correct, Wrong, and Unattempted updates the list each time",
+    "description": "Verifies that changing status filter repeatedly updates the question list without requiring re-analysis.",
+    "category": "Filtering & Search",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid response sheet URL into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration from the exam type/config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Analyze/Generate Scorecard button"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Correct\" from the Status filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Correct\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Wrong\" from the Status filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Wrong\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC056",
+    "title": "Analyze valid URL shows loading screen and transitions to results",
+    "description": "Verifies that starting analysis displays the loading screen with progress indicators and then transitions to the results view on success.",
+    "category": "Loading Screen & Progress",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page title contains \"CGL Score Sight\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Loading\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"progress indicator\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Scorecard\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC057",
+    "title": "Loading screen appears immediately after clicking Analyze",
+    "description": "Verifies the loading screen appears promptly after analysis starts so the user gets immediate feedback.",
+    "category": "Loading Screen & Progress",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/AssessmentQPHTMLMode1\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"LoadingScreen\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"progress indicator\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Analyzing\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC058",
+    "title": "Loading screen shows multiple progress states/messages during analysis",
+    "description": "Verifies that the loading experience includes visible progress indicators/messages rather than a blank spinner only.",
+    "category": "Loading Screen & Progress",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"progress indicator\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Fetching\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Parsing\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC059",
+    "title": "Loading screen prevents re-triggering analysis while in progress",
+    "description": "Verifies that while loading is active, the user cannot accidentally start a second analysis from the same screen.",
+    "category": "Loading Screen & Progress",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/AssessmentQPHTMLMode1\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"LoadingScreen\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Analyze\" is not visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"progress indicator\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC060",
+    "title": "Timeout prompt appears when parsing exceeds timeout/hangs",
+    "description": "Verifies that when analysis does not complete, a timeout prompt is shown with Retry and Cancel options.",
+    "category": "Loading Screen & Progress",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/unresponsive-response-sheet\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"LoadingScreen\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for \"timeout prompt\" to appear"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Timed out\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Retry\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Cancel\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC061",
+    "title": "Retry from timeout prompt restarts loading progress",
+    "description": "Verifies that clicking Retry from the timeout prompt returns to an active loading state with progress indicators.",
+    "category": "Loading Screen & Progress",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/unresponsive-response-sheet\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Analyze\""
+      },
+      {
+        "type": "action",
+        "description": "Wait for \"timeout prompt\" to appear"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Retry\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"LoadingScreen\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"progress indicator\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC062",
+    "title": "Cancel from timeout prompt returns user to the input screen",
+    "description": "Verifies that clicking Cancel dismisses the loading/timeout state and returns to the main input UI.",
+    "category": "Loading Screen & Progress",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/unresponsive-response-sheet\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Analyze\""
+      },
+      {
+        "type": "action",
+        "description": "Wait for \"timeout prompt\" to appear"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Cancel\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Analyze\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"response sheet URL field\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC063",
+    "title": "Loading screen fully disappears after successful transition to results",
+    "description": "Verifies that after analysis completes, the loading screen is no longer visible and results are shown cleanly.",
+    "category": "Loading Screen & Progress",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Analyze\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"LoadingScreen\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Scorecard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"LoadingScreen\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC064",
+    "title": "Analyze valid response sheet URL and display extracted candidate information",
+    "description": "Verifies that analyzing a valid response sheet URL shows a CandidateInfoCard populated with extracted candidate details.",
+    "category": "Candidate Information Extraction",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page title contains \"CGL\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse?test=valid\" into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"CandidateInfoCard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Roll\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Name\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Centre\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC065",
+    "title": "Extracted candidate fields are not shown as Unknown for a valid URL",
+    "description": "Verifies that for a valid response sheet URL, key candidate fields are populated and not displayed as Unknown placeholders.",
+    "category": "Candidate Information Extraction",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/AssessmentQPHTMLMode1?test=valid\" into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"CandidateInfoCard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Unknown\" is not visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Exam\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC066",
+    "title": "Missing or unusual candidate table shows Unknown placeholders with parse warning",
+    "description": "Verifies that when candidate fields cannot be extracted, the UI shows Unknown placeholders and a parse warning.",
+    "category": "Candidate Information Extraction",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse?test=missingCandidateTable\" into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"CandidateInfoCard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Unknown\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"warning\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"parse\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC067",
+    "title": "Candidate info card still renders when only some fields are extractable",
+    "description": "Verifies partial extraction behavior: some fields show values while missing ones show Unknown without breaking the CandidateInfoCard layout.",
+    "category": "Candidate Information Extraction",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse?test=partialCandidateFields\" into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"CandidateInfoCard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Roll\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Unknown\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC068",
+    "title": "Candidate extraction supports different exam page variants (ViewCandResponse vs AssessmentQPHTMLMode1)",
+    "description": "Verifies candidate info extraction works when the response sheet is from a different supported page variant.",
+    "category": "Candidate Information Extraction",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/AssessmentQPHTMLMode1?test=variantCandidateTable\" into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"CandidateInfoCard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Date\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Shift\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC069",
+    "title": "Invalid URL format is handled without showing CandidateInfoCard",
+    "description": "Verifies that an obviously invalid URL entry prevents successful analysis and does not display candidate info results.",
+    "category": "Candidate Information Extraction",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"not a url\" into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Invalid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"CandidateInfoCard\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC070",
+    "title": "Empty URL input shows a validation message and does not run analysis",
+    "description": "Verifies that clicking Analyze with an empty URL shows a visible validation message and does not display candidate info.",
+    "category": "Candidate Information Extraction",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"URL\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"CandidateInfoCard\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC071",
+    "title": "CandidateInfoCard displays all expected labels for extracted fields",
+    "description": "Verifies that CandidateInfoCard includes visible labels for all candidate fields (even if values may vary).",
+    "category": "Candidate Information Extraction",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse?test=valid\" into the response sheet URL input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"CandidateInfoCard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Roll\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Name\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Exam\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Centre\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC072",
+    "title": "Compute and display total score and section breakdown after analysis",
+    "description": "Verifies that after analyzing a valid response sheet URL with a selected exam config, the app shows Total Score and a visible section breakdown.",
+    "category": "Score Calculation & Section Rules",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total Score\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Section\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Correct\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Wrong\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC073",
+    "title": "Question-level scoring indicators appear alongside totals",
+    "description": "Verifies that question-level results (e.g., correct/wrong/unattempted) are visible and align with scoring presentation after analysis.",
+    "category": "Score Calculation & Section Rules",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/AssessmentQPHTMLMode1\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Correct\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Wrong\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Unattempted\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Question\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC074",
+    "title": "Section totals show counts including unattempted and bonus (if present)",
+    "description": "Verifies that the section breakdown includes count fields for correct, wrong, unattempted, and bonus when the analyzed sheet contains them.",
+    "category": "Score Calculation & Section Rules",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse?case=bonus\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Section Breakdown\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Unattempted\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Bonus\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total Score\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC075",
+    "title": "Qualifying section is flagged and excluded from total (when applicable)",
+    "description": "Verifies that when a qualifying section exists per selected config, the UI flags it and indicates exclusion from total scoring.",
+    "category": "Score Calculation & Section Rules",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option that includes a qualifying section from the exam config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse?case=qualifying\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Qualifying\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Excluded\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total Score\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Section Breakdown\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC076",
+    "title": "Exam config mismatch or warning message is shown and user can review config",
+    "description": "Verifies that when the selected exam config does not match the analyzed content expectations, the app shows a warning and allows review of the exam config selection.",
+    "category": "Score Calculation & Section Rules",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse?case=config-mismatch\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Warning\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Exam config\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the exam config dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Exam config options list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC077",
+    "title": "Changing exam config and re-analyzing updates displayed totals",
+    "description": "Verifies that selecting a different exam config and running analysis again results in updated score totals being shown on the page.",
+    "category": "Score Calculation & Section Rules",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total Score\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select a different exam configuration option from the exam config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total Score\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC078",
+    "title": "Empty or missing URL prevents scoring and shows validation feedback",
+    "description": "Verifies that attempting to analyze without a response sheet URL does not proceed to scoring output and shows visible validation feedback.",
+    "category": "Score Calculation & Section Rules",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an exam configuration option from the exam config dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"URL\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total Score\" is not visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Section Breakdown\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC079",
+    "title": "Selecting no exam config prevents scoring and prompts user to choose config",
+    "description": "Verifies that if the user provides a URL but does not select an exam config, the app blocks scoring and shows a visible prompt to select exam type/config.",
+    "category": "Score Calculation & Section Rules",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Type \"https://example.com/ViewCandResponse\" into the response sheet URL field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Analyze\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Exam\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Select\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total Score\" is not visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Section Breakdown\" is not visible"
+      }
+    ]
+  }
+]

@@ -1,0 +1,354 @@
+# CGL Score Sight - Current Features Documentation
+
+## Overview
+
+CGL Score Sight is a web application that analyzes exam response sheets for SSC, Railway, IB, Bank, and Police exams. It extracts question data, calculates scores, and provides detailed analytics.
+
+---
+
+## Implemented Features
+
+### 1. URL Input & Exam Selection
+
+**File**: `src/components/UrlInputForm.tsx`
+
+**Features**:
+- **Category Selection**: Dropdown to select exam category (SSC, Railway, IB, Bank, Police)
+- **Exam Type Selection**: Dynamic dropdown showing exams based on selected category
+- **Language Selection**: Choose between Hindi and English for question display
+- **URL Input Field**: Paste response sheet URL (supports digialm.com URLs)
+- **Analyze Button**: Submit URL for analysis with loading state
+
+**Supported URL Formats**:
+- `ViewCandResponse.aspx` - Multi-part SSC response sheets
+- `AssessmentQPHTMLMode1` - Answer key HTML format
+
+---
+
+### 2. Multi-Exam Support
+
+**File**: `src/lib/examConfig.ts`
+
+**Supported Exams (25+ types)**:
+
+| Category | Exams |
+|----------|-------|
+| **SSC** | CGL Tier-I/II, CHSL Tier-I/II, CPO Paper-I/II, MTS, GD Constable, Steno |
+| **Railway** | RRB NTPC CBT-1/2, Group D, JE CBT-1, ALP CBT-1 |
+| **IB** | ACIO, Security Assistant |
+| **Bank** | IBPS PO/Clerk Pre/Mains, SBI PO/Clerk Pre |
+| **Police** | Delhi Police Constable, Head Constable |
+
+---
+
+### 3. HTML Parsing
+
+**File**: `supabase/functions/analyze-response-sheet/index.ts`
+
+**Supported Formats**:
+
+**a) ViewCandResponse.aspx Format**:
+- Multi-part fetching (auto-detects parts 1-5)
+- Parses tables with bgcolor-based correctness
+- Green = correct answer, Red = wrong answer selected
+
+**b) AssessmentQPHTMLMode1 Format**:
+- Single HTML with all questions
+- Section labels with module indicators
+- `rightAns` / `wrngAns` CSS classes for answer correctness
+- `menu-tbl` for chosen option extraction
+
+**Parsing Features**:
+- Extracts question images and text
+- Extracts 4 options with images/text
+- Detects selected vs correct answers
+- Identifies bonus questions (no correct answer marked)
+
+---
+
+### 4. Candidate Information Extraction
+
+**Extracted Fields**:
+- Roll Number
+- Candidate Name
+- Exam Level / Post Name
+- Test Date
+- Shift / Time
+- Centre Name
+
+**Parsing Methods**:
+- Table-based parsing with regex
+- Plain text parsing for non-table formats
+- Date & shift splitting from combined fields
+
+**Display**: `src/components/CandidateInfoCard.tsx`
+
+---
+
+### 5. Question Display
+
+**File**: `src/components/QuestionCard.tsx`
+
+**Features**:
+- Question number with status badge
+- Question image display (with Hindi/English variants)
+- Question text display with formatted line breaks
+- 4 options with visual indicators:
+  - Green label = correct answer
+  - Red label = wrong answer selected by user
+  - Orange highlight = correct answer (when user selected wrong)
+  - Default = unselected options
+- Marks awarded display (+3, -1, 0)
+- Bonus question indicator with note
+
+**Text Formatting**:
+- Preserves line breaks from HTML
+- Detects option markers (A), B., C:, etc.)
+- Auto-formats long questions with sentence breaks
+
+---
+
+### 6. Bilingual Support
+
+**Image URL Pattern**:
+- Hindi: `filename_HI.jpg`
+- English: `filename_EN.jpg`
+
+**Features**:
+- Language toggle in QuestionsTable
+- Automatic language variant detection
+- Falls back to default if variant not available
+
+---
+
+### 7. Results Dashboard
+
+**File**: `src/components/ResultsDashboard.tsx`
+
+**Components**:
+
+**a) CandidateInfoCard**:
+- Displays candidate details with icons
+- Roll Number, Name, Exam, Date, Shift, Centre
+
+**b) ScoreSummaryCard**:
+- Total score with max marks
+- Correct count
+- Wrong count
+- Unattempted count
+- Bonus count
+
+**c) SectionBreakdown**:
+- Subject-wise score table
+- Correct/Wrong/Unattempted/Bonus counts per section
+- Section score vs max marks
+- Qualifying section indicator
+
+**d) QuestionsTable**:
+- Tabbed interface for All/By Subject views
+- Filter by Part/Subject
+- Filter by Status (Correct/Wrong/Unattempted/Bonus)
+- Language toggle button
+- Download buttons (Answer Key, Quiz Mode)
+
+---
+
+### 8. Filtering & Search
+
+**File**: `src/components/QuestionsTable.tsx`
+
+**Filters**:
+- **Part Filter**: Filter by exam part (A, B, C, D, E)
+- **Status Filter**: All, Correct, Wrong, Unattempted, Bonus
+- **Language Toggle**: Switch between Hindi/English display
+
+**Features**:
+- Shows count badge for each status
+- Bonus filter appears only if bonus questions exist
+
+---
+
+### 9. Download Features
+
+**File**: `src/hooks/useHtmlGenerator.ts`
+
+**Download Types**:
+
+**a) Response Sheet**:
+- Complete analysis with candidate info
+- Section-wise breakdown table
+- All questions with answer indicators
+- Shows user response vs correct answer
+- Available in Hindi/English/Bilingual
+
+**b) Answer Key (Normal Mode)**:
+- Clean question-answer format
+- Correct answers highlighted
+- No user response data
+
+**c) Quiz Mode**:
+- Interactive HTML file
+- Click options to reveal answers
+- Shows correct/wrong feedback
+- "Show Answer" button for each question
+
+**Language Options**:
+- Hindi only
+- English only
+- Bilingual (both Hindi and English images)
+
+---
+
+### 10. Loading Screen
+
+**File**: `src/components/LoadingScreen.tsx`
+
+**Features**:
+- Animated loading state during analysis
+- Progress indicators
+- Smooth transition to results
+
+---
+
+### 11. Score Calculation
+
+**Formula**:
+```
+Correct: +correctMarks
+Wrong: -negativeMarks
+Unattempted: 0
+Bonus: +correctMarks (full marks)
+
+Section Score = (Correct + Bonus) × correctMarks - (Wrong × negativeMarks)
+Total Score = Sum of non-qualifying section scores
+```
+
+**Qualifying Sections**:
+- Computer Knowledge in CGL Mains is qualifying
+- Not counted in total score
+
+---
+
+### 12. Error Handling
+
+**CORS Proxy Fallback Chain**:
+1. `r.jina.ai` - AI-powered content extractor
+2. `allorigins.win` - CORS proxy
+3. `corsproxy.io` - CORS proxy
+4. `thingproxy.freeboard.io` - Free proxy
+
+**Error Types Handled**:
+- Network errors with retry option
+- Parse errors with details
+- CORS errors with alternative methods
+
+---
+
+## File Structure
+
+```
+src/
+├── components/
+│   ├── UrlInputForm.tsx        # URL input, exam/language selection
+│   ├── LoadingScreen.tsx       # Loading animation
+│   ├── ResultsDashboard.tsx    # Main results container
+│   ├── CandidateInfoCard.tsx   # Candidate details display
+│   ├── ScoreSummaryCard.tsx    # Score overview
+│   ├── SectionBreakdown.tsx    # Subject-wise analysis
+│   ├── QuestionsTable.tsx      # Question list with filters
+│   ├── QuestionCard.tsx        # Individual question display
+│   └── DownloadLanguageDialog.tsx # Download language selector
+├── lib/
+│   ├── examConfig.ts           # All exam configurations
+│   ├── mockData.ts             # Types and interfaces
+│   └── api/
+│       └── analyzeSheet.ts     # API calls
+├── hooks/
+│   ├── useHtmlGenerator.ts     # HTML download generation
+│   └── use-toast.ts            # Toast notifications
+└── pages/
+    └── Index.tsx               # Main page
+
+supabase/
+└── functions/
+    └── analyze-response-sheet/
+        └── index.ts            # Edge function for parsing
+```
+
+---
+
+## API Endpoint
+
+**Edge Function**: `analyze-response-sheet`
+
+**Request**:
+```json
+{
+  "url": "https://...",
+  "examType": "SSC_CGL_MAINS",
+  "language": "hindi"
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "candidate": {
+      "rollNumber": "...",
+      "name": "...",
+      "examLevel": "...",
+      "testDate": "...",
+      "shift": "...",
+      "centreName": "..."
+    },
+    "examType": "SSC_CGL_MAINS",
+    "examConfig": { ... },
+    "language": "hindi",
+    "totalScore": 150.00,
+    "maxScore": 390,
+    "totalQuestions": 150,
+    "correctCount": 60,
+    "wrongCount": 30,
+    "unattemptedCount": 10,
+    "bonusCount": 0,
+    "sections": [ ... ],
+    "questions": [ ... ]
+  }
+}
+```
+
+---
+
+## Data Types
+
+**QuestionData**:
+```typescript
+interface QuestionData {
+  questionNumber: number;
+  part: string;
+  subject: string;
+  questionImageUrl: string;
+  questionImageUrlHindi?: string;
+  questionImageUrlEnglish?: string;
+  questionText?: string;
+  options: {
+    id: string;
+    imageUrl: string;
+    imageUrlHindi?: string;
+    imageUrlEnglish?: string;
+    text?: string;
+    isSelected: boolean;
+    isCorrect: boolean;
+  }[];
+  status: 'correct' | 'wrong' | 'unattempted' | 'bonus';
+  marksAwarded: number;
+  isBonus?: boolean;
+}
+```
+
+---
+
+*Document Version: 1.0*
+*Last Updated: February 2026*
